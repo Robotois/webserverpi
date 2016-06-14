@@ -17,8 +17,8 @@ function *home() {
 
 function *show() {
    var data = yield parse(this);
-   console.log(data);
-   this.body = data;
+   console.log(data.led3);
+   this.body = data.led;
 }
 
 // listen
