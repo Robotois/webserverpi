@@ -18,9 +18,55 @@ function *home() {
 function *show() {
    var data = yield parse(this);
    this.body = data;
+  //  leds();
+  distance();
 }
 
 // listen
 
 app.listen(8082);
 console.log('listening on port 8082');
+
+function leds(){
+  var rgbs = require('../eModules/piModules/NodeLibrary/RGBModule')
+  var sleep = require('sleep');
+
+  rgbs.SetRGB(1,128,0,128); // Purple
+  rgbs.SetRGB(2,0,0,0); // dark turquoise
+  rgbs.SetRGB(3,0,0,0); // Olive
+
+  sleep.sleep(1);
+  rgbs.ledOff(1);
+  sleep.sleep(1);
+  rgbs.SetRGB(1,128,0,128); // Purple
+
+  sleep.sleep(1);
+  rgbs.ledOff(1);
+  sleep.sleep(1);
+  rgbs.SetRGB(1,128,0,128); // Purple
+
+  sleep.sleep(1);
+  rgbs.ledOff(1);
+  sleep.sleep(1);
+  rgbs.SetRGB(1,128,0,128); // Purple
+
+  sleep.sleep(1);
+  rgbs.ledOff(1);
+  sleep.sleep(1);
+  rgbs.SetRGB(1,128,0,128); // Purple
+
+  sleep.sleep(1);
+  rgbs.ledOff(1);
+  sleep.sleep(1);
+  rgbs.SetRGB(1,128,0,128); // Purple
+}
+
+function distance(){
+  var dist = require('../eModules/piModules/NodeLibrary/DistanceModule');
+  var distModule = dist(1);
+
+  // setInterval(function () {
+    console.log("The current Distance is: "+distModule.Distance());
+  // },500);
+
+}
