@@ -18,8 +18,8 @@ function *home() {
 function *show() {
    var data = yield parse(this);
    console.log(data.led3);
-   leds();
-   this.body = data;
+   leds(data);
+   this.body = {success: true, message: 'exito!'};
 }
 
 // listen
@@ -27,13 +27,13 @@ function *show() {
 app.listen(8082);
 console.log('listening on port 8082');
 
-function leds(){
+function leds(data){
   var rgbs = require('../eModules/piModules/NodeLibrary/RGBModule')
   var sleep = require('sleep');
 
-  rgbs.SetRGB(1,128,0,128); // Purple
-  rgbs.SetRGB(2,0,0,0); // dark turquoise
-  rgbs.SetRGB(3,0,0,0); // Olive
+  rgbs.SetRGB(1,data.led1.color.r,data.led1.color.g,data.led1.color.b); // Purple
+  rgbs.SetRGB(2,data.led2.color.r,data.led2.color.g,data.led2.color.b); // dark turquoise
+  rgbs.SetRGB(3,data.led3.color.r,data.led3.color.g,data.led3.color.b); // Olive
 
   sleep.sleep(1);
   rgbs.ledOff(1);
