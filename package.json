@@ -10,5 +10,8 @@
     "robotois"
   ],
   "author": "manduks",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "supervisor": "^0.11.0"
+  }
 }
