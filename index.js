@@ -58,7 +58,7 @@ function *show() {
     for (var id in cluster.workers) {
       cluster.workers[id].kill();
     }
-  },5000);
+  },10000);
   cluster.fork();
 
   console.log("Executing script...");
