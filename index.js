@@ -10,7 +10,7 @@ var cluster = require('cluster');
 
 // - Cluster configuration
 cluster.setupMaster({
-  exec : "tests/leds.js",
+  exec : "tests/rob3rt.js",
   args : process.argv.slice(2),
   silent : false
 });
@@ -55,10 +55,11 @@ function *show() {
   });
 
   setTimeout(()=>{
+    console.log("Ending workers...");
     for (var id in cluster.workers) {
       cluster.workers[id].kill();
     }
-  },10000);
+  },30000);
   cluster.fork();
 
   console.log("Executing script...");

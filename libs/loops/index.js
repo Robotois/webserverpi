@@ -23,6 +23,17 @@ loops.prototype.while = function (stopCond,whileBody,whileName){
   run();
 };
 
+loops.prototype.forever = function (whileBody){
+  var self = this;
+
+  function run(){
+    whileBody();
+    setImmediate(run);
+  };
+
+  run();
+};
+
 loops.prototype.for = function (initVal,endVal,forBody,forName) {
   this.index = initVal
   var self = this;
@@ -38,7 +49,7 @@ loops.prototype.for = function (initVal,endVal,forBody,forName) {
       }
     }
   };
-  
+
   run();
 };
 
