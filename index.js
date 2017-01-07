@@ -6,8 +6,9 @@ var app = koa();
 // robotios requires
 const Light = require('../eModules/NodeLibrary/LightModule');
 const Led  =  require('../eModules/NodeLibrary/LEDModule');
+const Temperature  =  require('../eModules/NodeLibrary/TempModule');
 
-var light, led;
+var light, led, temperature;
 
 app.use(logger());
 
@@ -40,6 +41,11 @@ function runCode(data) {
   if (modules.led && modules.led.port) {
     led = new Led(modules.led.port);
   }
+  // temperature
+  if (modules.led && modules.led.port) {
+    temperature = new Temperature(modules.led.port);
+  }
+  
   if (!data.code) {
     return {
       success: false,
