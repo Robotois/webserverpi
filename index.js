@@ -44,7 +44,7 @@ function runCode(data) {
       message: 'No code was provided'
     }
   }
-  eval(code);
+  eval(data.code);
   footer();
   return {
     success: true,
