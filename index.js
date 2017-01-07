@@ -19,7 +19,7 @@ function *home() {
 function *show() {
    var data = yield parse(this);
    console.log(data);
-   this.body = runCode(data)
+   this.body = runCode(data);
 }
 
 // listen
@@ -29,13 +29,15 @@ console.log('listening on port 8082');
 
 //exec code
 function runCode(data) {
-  const modules = data.modules
+  const modules = data.modules;
   // light sensor
   if (modules.light && modules.light.port) {
+    console.log('se crea la varible de light');
     const light = new Light(modules.light.port);
   }
   // led
   if (modules.led && modules.led.port) {
+    console.log('se crea la varible de led');
     const led = new Led(modules.led.port);
   }
   if (!data.code) {
