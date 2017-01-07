@@ -1,4 +1,4 @@
-//var service = require('./controllers/service.js');
+var service = require('./controllers/service.js');
 var logger = require('koa-logger');
 var route = require('koa-route');
 var parse = require('co-body');
