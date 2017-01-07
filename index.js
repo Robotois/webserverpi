@@ -4,7 +4,9 @@ var route = require('koa-route');
 var parse = require('co-body');
 var koa = require('koa');
 var app = koa();
-// middleware
+// robotios requires
+const Light = require('../eModules/piModules/NodeLibrary/LightModule');
+const Led  =  require('../eModules/piModules/NodeLibrary/LEDModule');
 
 app.use(logger());
 
@@ -17,9 +19,8 @@ function *home() {
 
 function *show() {
    var data = yield parse(this);
-   console.log(data.led3);
-   leds(data);
-   this.body = {success: true, message: 'exito!'};
+   console.log(data);
+   this.body = runCode(data)
 }
 
 // listen
@@ -27,46 +28,41 @@ function *show() {
 app.listen(8082);
 console.log('listening on port 8082');
 
-function leds(data){
-  var rgbs = require('../eModules/piModules/NodeLibrary/RGBModule')
-  var sleep = require('sleep');
+//exec code
+function runCode(data) {
+  const modules = data.modules
+  // light sensor
+  if (modules.light && modules.light.port) {
+    const light = new Light(modules.light.port);
+  }
+  // led
+  if (modules.led && modules.led.port) {
+    const led = new Led(modules.led.port);
+  }
+  if (!data.code) {
+    return {
+      success: false,
+      message: 'No code was provided'
+    }
+  }
+  eval(code);
+  footer();
+  return {
+    success: true,
+    message: 'exito!'
+  };
+};
 
-  rgbs.SetRGB(1,data.led1.color.r,data.led1.color.g,data.led1.color.b); // Purple
-  rgbs.SetRGB(2,data.led2.color.r,data.led2.color.g,data.led2.color.b); // dark turquoise
-  rgbs.SetRGB(3,data.led3.color.r,data.led3.color.g,data.led3.color.b); // Olive
+function footer() {
+  setInterval(()=>{ // Proceso en estado ocioso
+    true;
+  },10000);
 
-  sleep.sleep(1);
-  rgbs.ledOff(1);
-  sleep.sleep(1);
-  rgbs.SetRGB(1,128,0,128); // Purple
+  process.on('SIGTERM', function () {
+    process.exit();
+  });
 
-  sleep.sleep(1);
-  rgbs.ledOff(1);
-  sleep.sleep(1);
-  rgbs.SetRGB(1,128,0,128); // Purple
-
-  sleep.sleep(1);
-  rgbs.ledOff(1);
-  sleep.sleep(1);
-  rgbs.SetRGB(1,128,0,128); // Purple
-
-  sleep.sleep(1);
-  rgbs.ledOff(1);
-  sleep.sleep(1);
-  rgbs.SetRGB(1,128,0,128); // Purple
-
-  sleep.sleep(1);
-  rgbs.ledOff(1);
-  sleep.sleep(1);
-  rgbs.SetRGB(1,128,0,128); // Purple
-}
-
-function distance(){
-  var dist = require('../eModules/piModules/NodeLibrary/DistanceModule');
-  var distModule = dist(1);
-
-  // setInterval(function () {
-    console.log("The current Distance is: "+distModule.Distance());
-  // },500);
-
+  process.on('SIGINT', function () {
+    process.exit();
+  });
 }
