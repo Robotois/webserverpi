@@ -42,10 +42,10 @@ function runCode(data) {
     led = new Led(modules.led.port);
   }
   // temperature
-  if (modules.led && modules.led.port) {
-    temperature = new Temperature(modules.led.port);
+  if (modules.temperature && modules.temperature.port) {
+    temperature = new Temperature(modules.temperature.port);
   }
-  
+
   if (!data.code) {
     return {
       success: false,
