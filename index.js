@@ -5,8 +5,8 @@ var parse = require('co-body');
 var koa = require('koa');
 var app = koa();
 // robotios requires
-// const Light = require('../eModules/piModules/NodeLibrary/LightModule');
-// const Led  =  require('../eModules/piModules/NodeLibrary/LEDModule');
+const Light = require('../eModules/piModules/NodeLibrary/LightModule');
+const Led  =  require('../eModules/piModules/NodeLibrary/LEDModule');
 
 app.use(logger());
 
