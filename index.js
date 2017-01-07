@@ -30,15 +30,16 @@ console.log('listening on port 8082');
 //exec code
 function runCode(data) {
   const modules = data.modules;
+  const light, led;
   // light sensor
   if (modules.light && modules.light.port) {
     console.log('se crea la varible de light');
-    const light = new Light(modules.light.port);
+    light = new Light(modules.light.port);
   }
   // led
   if (modules.led && modules.led.port) {
     console.log('se crea la varible de led');
-    const led = new Led(modules.led.port);
+    led = new Led(modules.led.port);
   }
   if (!data.code) {
     return {
