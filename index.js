@@ -7,8 +7,9 @@ var app = koa();
 const Light = require('../eModules/NodeLibrary/LightModule');
 const Led  =  require('../eModules/NodeLibrary/LEDModule');
 const Temperature  =  require('../eModules/NodeLibrary/TempModule');
+const LCD  =  require('../eModules/NodeLibrary/LCDModule');
 
-var light, led, temperature;
+var light, led, temperature, lcd;
 
 app.use(logger());
 
@@ -44,6 +45,10 @@ function runCode(data) {
   // temperature
   if (modules.temperature && modules.temperature.port) {
     temperature = new Temperature(modules.temperature.port);
+  }
+  // lcd
+  if (modules.lcd && modules.lcd.port) {
+    lcd = new LCD(modules.lcd.port);
   }
 
   if (!data.code) {
