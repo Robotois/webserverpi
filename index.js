@@ -48,7 +48,7 @@ function runCode(data) {
   }
   // lcd
   if (modules.lcd && modules.lcd.port) {
-    lcd = new LCD(modules.lcd.port);
+    lcd = new LCD();
     lcd.home();
   }
 
