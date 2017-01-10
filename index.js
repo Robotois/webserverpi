@@ -8,8 +8,9 @@ const Light = require('../eModules/NodeLibrary/LightModule');
 const Led  =  require('../eModules/NodeLibrary/LEDModule');
 const Temperature  =  require('../eModules/NodeLibrary/TempModule');
 const LCD  =  require('../eModules/NodeLibrary/LCDModule');
+const Rotatory  =  require('../eModules/NodeLibrary/RotaryModule');
 
-var light, led, temperature, lcd;
+var light, led, temperature, lcd, rotatory;
 
 app.use(logger());
 
@@ -49,6 +50,10 @@ function runCode(data) {
   // lcd
   if (modules.lcd && modules.lcd.port) {
     lcd = new LCD();
+  }
+  // rotatory
+  if (modules.rotatory && modules.rotatory.port) {
+    rotatory = new Rotatory(modules.rotatory.port);
   }
 
   if (!data.code) {
