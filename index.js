@@ -11,6 +11,7 @@ const LCD  =  require('../eModules/NodeLibrary/LCDModule');
 const Rotatory  =  require('../eModules/NodeLibrary/RotaryModule');
 const Distance  =  require('../eModules/NodeLibrary/UltrasonicModule');
 const Button  =  require('../eModules/NodeLibrary/ButtonModule');
+const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 
 var light, led, temperature, lcd, rotatory, distance, button;
 
@@ -64,6 +65,10 @@ function runCode(data) {
   // button
   if (modules.button && modules.button.port) {
     button = new Button(modules.button.port);
+  }
+  // ledRGB
+  if (modules.ledRGB && modules.ledRGB.port) {
+    ledRGB = new LedRGB(modules.ledRGB.port);
   }
 
   if (!data.code) {
