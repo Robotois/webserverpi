@@ -70,9 +70,9 @@ function runCode(data) {
   if (modules.ledRGB && modules.ledRGB.port) {
     ledRGB = new LedRGB();
     // ledRGB.setRGB(1, 0, 0, 0);
-    ledRGB.setRGB(1, 255, 0, 0);
+    /* ledRGB.setRGB(1, 255, 0, 0);
     console.log('entro aqui');
-    return ;
+    return ;*/
   }
 
   if (!data.code) {
