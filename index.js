@@ -68,7 +68,7 @@ function runCode(data) {
   }
   // ledRGB
   if (modules.ledRGB && modules.ledRGB.port) {
-    ledRGB = new LedRGB(modules.ledRGB.port);
+    ledRGB = new LedRGB();
   }
 
   if (!data.code) {
