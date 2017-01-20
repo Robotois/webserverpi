@@ -13,7 +13,7 @@ const Distance  =  require('../eModules/NodeLibrary/UltrasonicModule');
 const Button  =  require('../eModules/NodeLibrary/ButtonModule');
 const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 
-var light, led, temperature, lcd, rotatory, distance, button;
+var light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 
 app.use(logger());
 
@@ -69,7 +69,8 @@ function runCode(data) {
   // ledRGB
   if (modules.ledRGB && modules.ledRGB.port) {
     ledRGB = new LedRGB();
-    ledRGB.setRGB(1, 0, 0, 0);
+    // ledRGB.setRGB(1, 0, 0, 0);
+    ledRGB.setRGB(1, 255, 0, 0);
     console.log('entro aqui');
     return ;
   }
