@@ -39,6 +39,7 @@ function *show() {
         }
     );
    setTimeout(function () {
+     console.log('killing process');
      exec.kill();
    }, 10000);
    // killl exec whe process ends
