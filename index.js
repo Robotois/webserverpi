@@ -10,6 +10,7 @@ app.use(logger());
 
 app.use(route.get('/', home));
 app.use(route.post('/post', show));
+app.use(route.post('/reset', reset));
 
 function *home() {
   this.body = 'Hello World';
@@ -38,14 +39,19 @@ function *show() {
         }
         }
     );
-   setTimeout(function () {
-     console.log('killing process');
-     exec.kill();
-   }, 10000);
    // killl exec whe process ends
    process.on('exit', function () {
      exec.kill();
    });
+   this.body = {
+     success: true,
+     message: 'exito!'
+   };
+}
+function *reset() {
+   var data = yield parse(this);
+   console.log('reset all tois');
+   exec.kill();
    this.body = {
      success: true,
      message: 'exito!'
