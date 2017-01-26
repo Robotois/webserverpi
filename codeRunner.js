@@ -1,4 +1,3 @@
-
 // robotios requires
 const Light = require('../eModules/NodeLibrary/LightModule');
 const Led  =  require('../eModules/NodeLibrary/LEDModule');
@@ -10,14 +9,11 @@ const Button  =  require('../eModules/NodeLibrary/ButtonModule');
 const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 
 // get data from params
-console.log('**********we got data***********' + process.env.data);
-console.log(JSON.parse(process.env.data));
 const data = JSON.parse(process.env.data);
 const modules = data.modules;
 
-
 // light sensor
-/*if (modules.light && modules.light.port) {
+if (modules.light && modules.light.port) {
   light = new Light(modules.light.port);
 }
 // led
@@ -53,7 +49,7 @@ eval(data.code);
 
 setInterval(()=>{ // Proceso en estado ocioso
   true;
-},10000);
+}, 10000);
 
 process.on('SIGTERM', function () {
   process.exit();
@@ -61,4 +57,4 @@ process.on('SIGTERM', function () {
 
 process.on('SIGINT', function () {
   process.exit();
-});*/
+});
