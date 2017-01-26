@@ -10,10 +10,11 @@ const Button  =  require('../eModules/NodeLibrary/ButtonModule');
 const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 
 // get data from params
+console.log('**********we got data***********' + process.env);
 const data = process.env.data;
 const modules = data.modules;
 
-console.log('we got data' + data);
+
 // light sensor
 if (modules.light && modules.light.port) {
   light = new Light(modules.light.port);
