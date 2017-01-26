@@ -50,6 +50,7 @@ function *show() {
      message: 'exito!'
    };
 }
+
 function *reset() {
    var data = yield parse(this);
    resetTois(data);
