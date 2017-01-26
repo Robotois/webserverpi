@@ -30,10 +30,13 @@ function *show() {
    exec('node codeRunner.js',
         { env: env },
         function (err, stdout, stderr) {
-            if (err) {
-                throw err;
-            }
+          if (err) {
+            console.log(err.toString());
+          } else if (stdout !== "") {
             console.log(stdout);
+          } else {
+            console.log(stderr);
+          }
         }
     );
    this.body = {
