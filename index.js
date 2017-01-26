@@ -4,6 +4,8 @@ var parse = require('co-body');
 var koa = require('koa');
 var app = koa();
 var child_process = require('child_process');
+const resetTois  =  require('./resetTois');
+
 var exec, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 
 app.use(logger());
@@ -50,8 +52,7 @@ function *show() {
 }
 function *reset() {
    var data = yield parse(this);
-   console.log('reset all tois');
-   exec.kill();
+   resetTois(data);
    this.body = {
      success: true,
      message: 'exito!'
