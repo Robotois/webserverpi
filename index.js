@@ -17,7 +17,6 @@ function *home() {
 
 function *show() {
    var data = yield parse(this);
-   console.log(data);
    if (!data.code) {
      return this.body =  {
        success: false,
@@ -39,6 +38,13 @@ function *show() {
         }
         }
     );
+   setTimeout(function () {
+     exec.kill();
+   }, 10000);
+   // killl exec whe process ends
+   process.on('exit', function () {
+     exec.kill();
+   });
    this.body = {
      success: true,
      message: 'exito!'
