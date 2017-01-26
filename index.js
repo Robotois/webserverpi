@@ -3,8 +3,8 @@ var route = require('koa-route');
 var parse = require('co-body');
 var koa = require('koa');
 var app = koa();
-var exec = require('child_process').exec;
-var env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
+var child_process = require('child_process');
+var exec, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 
 app.use(logger());
 
@@ -26,7 +26,7 @@ function *show() {
    env = {
      data: JSON.stringify(data)
    };
-   exec('node codeRunner.js',
+   exec = child_process.exec('node codeRunner.js',
         { env: env },
         function (err, stdout, stderr) {
           if (err) {
