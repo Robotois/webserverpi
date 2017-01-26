@@ -16,7 +16,7 @@ const modules = data.modules;
 
 
 // light sensor
-if (modules.light && modules.light.port) {
+/*if (modules.light && modules.light.port) {
   light = new Light(modules.light.port);
 }
 // led
@@ -60,4 +60,4 @@ process.on('SIGTERM', function () {
 
 process.on('SIGINT', function () {
   process.exit();
-});
+});*/

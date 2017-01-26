@@ -24,7 +24,9 @@ function *show() {
        message: 'No code was provided'
      }
    }
-   env = { data = data };
+   env = {
+     data: data
+   };
    exec('node codeRunner.js',
         { env: env },
         function (err, stdout, stderr) {
