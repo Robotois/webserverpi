@@ -25,18 +25,18 @@ function *show() {
      }
    }
    env = {
-     data: data
+     data: JSON.stringify(data)
    };
    exec('node codeRunner.js',
         { env: env },
         function (err, stdout, stderr) {
           if (err) {
-            console.log(err.toString());
-          } else if (stdout !== "") {
-            console.log(stdout);
-          } else {
-            console.log(stderr);
-          }
+          console.log(err.toString());
+        } else if (stdout !== "") {
+          console.log(stdout);
+        } else {
+          console.log(stderr);
+        }
         }
     );
    this.body = {

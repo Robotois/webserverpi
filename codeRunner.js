@@ -10,8 +10,9 @@ const Button  =  require('../eModules/NodeLibrary/ButtonModule');
 const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 
 // get data from params
-console.log('**********we got data***********' + JSON.stringify(process.env));
-const data = process.env.data;
+console.log('**********we got data***********' + process.env.data);
+console.log(JSON.parse(process.env.data));
+const data = JSON.parse(process.env.data);
 const modules = data.modules;
 
 
