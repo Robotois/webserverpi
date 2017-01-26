@@ -3,17 +3,8 @@ var route = require('koa-route');
 var parse = require('co-body');
 var koa = require('koa');
 var app = koa();
-// robotios requires
-const Light = require('../eModules/NodeLibrary/LightModule');
-const Led  =  require('../eModules/NodeLibrary/LEDModule');
-const Temperature  =  require('../eModules/NodeLibrary/TempModule');
-const LCD  =  require('../eModules/NodeLibrary/LCDModule');
-const Rotatory  =  require('../eModules/NodeLibrary/RotaryModule');
-const Distance  =  require('../eModules/NodeLibrary/UltrasonicModule');
-const Button  =  require('../eModules/NodeLibrary/ButtonModule');
-const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
-
-var light, led, temperature, lcd, rotatory, distance, button, ledRGB;
+var exec = require('child_process').exec;
+var env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 
 app.use(logger());
 
@@ -27,78 +18,30 @@ function *home() {
 function *show() {
    var data = yield parse(this);
    console.log(data);
-   this.body = runCode(data);
+   if (!data.code) {
+     return this.body =  {
+       success: false,
+       message: 'No code was provided'
+     }
+   }
+   env = {
+     data: data 
+   };
+   exec('node codeRunner.js',
+        { env: env },
+        function (err, stdout, stderr) {
+            if (err) {
+                throw err;
+            }
+            console.log(stdout);
+        }
+    );
+   this.body = {
+     success: true,
+     message: 'exito!'
+   };
 }
 
 // listen
-
 app.listen(8082);
 console.log('listening on port 8082');
-
-//exec code
-function runCode(data) {
-  const modules = data.modules;
-  // light sensor
-  if (modules.light && modules.light.port) {
-    light = new Light(modules.light.port);
-  }
-  // led
-  if (modules.led && modules.led.port) {
-    led = new Led(modules.led.port);
-  }
-  // temperature
-  if (modules.temperature && modules.temperature.port) {
-    temperature = new Temperature(modules.temperature.port);
-  }
-  // lcd
-  if (modules.lcd && modules.lcd.port) {
-    lcd = new LCD();
-  }
-  // rotatory
-  if (modules.rotatory && modules.rotatory.port) {
-    rotatory = new Rotatory(modules.rotatory.port);
-  }
-  // distance
-  if (modules.distance && modules.distance.port) {
-    distance = new Distance(modules.distance.port);
-  }
-  // button
-  if (modules.button && modules.button.port) {
-    button = new Button(modules.button.port);
-  }
-  // ledRGB
-  if (modules.ledRGB && modules.ledRGB.port) {
-    ledRGB = new LedRGB();
-    // ledRGB.setRGB(1, 0, 0, 0);
-    /* ledRGB.setRGB(1, 255, 0, 0);
-    console.log('entro aqui');
-    return ;*/
-  }
-
-  if (!data.code) {
-    return {
-      success: false,
-      message: 'No code was provided'
-    }
-  }
-  eval(data.code);
-  footer();
-  return {
-    success: true,
-    message: 'exito!'
-  };
-};
-
-function footer() {
-  setInterval(()=>{ // Proceso en estado ocioso
-    true;
-  },10000);
-
-  process.on('SIGTERM', function () {
-    process.exit();
-  });
-
-  process.on('SIGINT', function () {
-    process.exit();
-  });
-}
