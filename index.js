@@ -55,7 +55,6 @@ function *post() {
 
 function *reset() {
    var data = yield parse(this);
-   console.log('going to reset data');
    resetTois(data);
    this.body = {
      success: true,

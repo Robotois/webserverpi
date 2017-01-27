@@ -10,8 +10,6 @@ const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 
 function resetTois(data) {
   const modules = data.modules;
-
-  console.log(modules);
   // led
   if (modules.led && modules.led.port) {
     led = new Led(modules.led.port);
