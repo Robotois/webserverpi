@@ -43,6 +43,7 @@ function *show() {
           }
         }
     );
+   exec.stdout.pipe(process.stdout);
    // killl exec whe process ends
    process.on('exit', function () {
      exec.kill();
