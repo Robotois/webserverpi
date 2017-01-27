@@ -11,14 +11,14 @@ var exec, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 app.use(logger());
 
 app.use(route.get('/', home));
-app.use(route.post('/post', show));
+app.use(route.post('/post', post));
 app.use(route.post('/reset', reset));
 
 function *home() {
   this.body = 'Hello World';
 }
 
-function *show() {
+function *post() {
    var data = yield parse(this);
    if (!data.code) {
      return this.body =  {
@@ -56,6 +56,7 @@ function *show() {
 
 function *reset() {
    var data = yield parse(this);
+   console.log('going to reset data');
    resetTois(data);
    this.body = {
      success: true,
