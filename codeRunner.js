@@ -12,8 +12,6 @@ const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 const data = JSON.parse(process.env.data);
 const modules = data.modules;
 
-console.log('Going to run code **************');
-
 // light sensor
 if (modules.light && modules.light.port) {
   light = new Light(modules.light.port);
@@ -46,6 +44,8 @@ if (modules.button && modules.button.port) {
 if (modules.ledRGB && modules.ledRGB.port) {
   ledRGB = new LedRGB();
 }
+
+console.log('Going to run code 12312313**************');
 
 eval(data.code);
 
