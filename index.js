@@ -3,10 +3,10 @@ var route = require('koa-route');
 var parse = require('co-body');
 var koa = require('koa');
 var app = koa();
-var child_process = require('child_process');
+var spawn = require('child_process').spawn;
 const resetTois  =  require('./resetTois');
 
-var exec, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
+var runCode, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 
 app.use(logger());
 
@@ -29,8 +29,21 @@ function *show() {
    env = {
      data: JSON.stringify(data)
    };
-   console.log('before running exec');
-   exec = child_process.exec('node codeRunner.js',
+
+   runCode = spawn('node codeRunner.js', [], { env: env });
+
+   runCode.stdout.on('data', function (data) {
+     console.log('stdout: ' + data.toString());
+   });
+
+   runCode.stderr.on('data', function (data) {
+     console.log('stderr: ' + data.toString());
+   });
+
+   runCode.on('exit', function (code) {
+     console.log('child process exited with code ' + code.toString());
+   });
+   /*exec = child_process.exec('node codeRunner.js',
         { env: env },
         function (err, stdout, stderr) {
           console.log('callback exec');
@@ -42,11 +55,11 @@ function *show() {
             console.log(stderr);
           }
         }
-    );
-   exec.stdout.pipe(process.stdout);
+    );*/
+   // exec.stdout.pipe(process.stdout);
    // killl exec whe process ends
    process.on('exit', function () {
-     exec.kill();
+     runCode.kill();
    });
 
    this.body = {
