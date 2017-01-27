@@ -30,7 +30,7 @@ function *show() {
      data: JSON.stringify(data)
    };
 
-   runCode = spawn('node codeRunner.js', [], { env: env });
+   runCode = spawn('node', ['codeRunner.js'], { env: env });
 
    runCode.stdout.on('data', function (data) {
      console.log('stdout: ' + data.toString());
