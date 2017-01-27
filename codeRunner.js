@@ -45,8 +45,6 @@ if (modules.ledRGB && modules.ledRGB.port) {
   ledRGB = new LedRGB();
 }
 
-console.log('Going to run code 12312313**************');
-
 eval(data.code);
 
 setInterval(()=>{ // Proceso en estado ocioso
