@@ -32,7 +32,6 @@ function *post() {
    exec = child_process.exec('node codeRunner.js',
         { env: env },
         function (err, stdout, stderr) {
-          console.log('callback exec');
           if (err) {
             console.log(err.toString());
           } else if (stdout !== "") {
