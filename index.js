@@ -29,9 +29,11 @@ function *show() {
    env = {
      data: JSON.stringify(data)
    };
+   console.log('before running exec');
    exec = child_process.exec('node codeRunner.js',
         { env: env },
         function (err, stdout, stderr) {
+          console.log('callback exec');
           if (err) {
             console.log(err.toString());
           } else if (stdout !== "") {
@@ -45,7 +47,7 @@ function *show() {
    process.on('exit', function () {
      exec.kill();
    });
-   
+
    this.body = {
      success: true,
      message: 'exito!'
