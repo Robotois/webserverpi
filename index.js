@@ -33,18 +33,19 @@ function *show() {
         { env: env },
         function (err, stdout, stderr) {
           if (err) {
-          console.log(err.toString());
-        } else if (stdout !== "") {
-          console.log(stdout);
-        } else {
-          console.log(stderr);
-        }
+            console.log(err.toString());
+          } else if (stdout !== "") {
+            console.log(stdout);
+          } else {
+            console.log(stderr);
+          }
         }
     );
    // killl exec whe process ends
    process.on('exit', function () {
      exec.kill();
    });
+   
    this.body = {
      success: true,
      message: 'exito!'
