@@ -14,7 +14,7 @@ function resetTois(data) {
   if (modules.led && modules.led.port) {
     led = new Led(modules.led.port);
     // led.turnOff();
-    led.led.release();
+    led.release();
   }
   setInterval(()=>{ // Proceso en estado ocioso
     true;
