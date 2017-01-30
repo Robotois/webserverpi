@@ -10,12 +10,48 @@ const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 
 function resetTois(data) {
   const modules = data.modules;
+
+  // light sensor
+  if (modules.light && modules.light.port) {
+    light = new Light(modules.light.port);
+    light.release();
+  }
   // led
   if (modules.led && modules.led.port) {
     led = new Led(modules.led.port);
-    // led.turnOff();
     led.release();
   }
+  // temperature
+  if (modules.temperature && modules.temperature.port) {
+    temperature = new Temperature(modules.temperature.port);
+    temperature.release();
+  }
+  // lcd
+  if (modules.lcd && modules.lcd.port) {
+    lcd = new LCD();
+    lcd.release();
+  }
+  // rotatory
+  if (modules.rotatory && modules.rotatory.port) {
+    rotatory = new Rotatory(modules.rotatory.port);
+    rotatory.release();
+  }
+  // distance
+  if (modules.distance && modules.distance.port) {
+    distance = new Distance(modules.distance.port);
+    distance.release();
+  }
+  // button
+  if (modules.button && modules.button.port) {
+    button = new Button(modules.button.port);
+    button.release();
+  }
+  // ledRGB
+  if (modules.ledRGB && modules.ledRGB.port) {
+    ledRGB = new LedRGB();
+    ledRGB.release();
+  }
+
   setInterval(()=>{ // Proceso en estado ocioso
     true;
   }, 10000);
