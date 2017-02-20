@@ -76,7 +76,7 @@ io.listen(8888);
 
 setInterval(function () {
   io.emit('data', {
-    temperature: 32,
-    light: 10
+    temperature: Math.floor((Math.random() * 100) + 1),
+    light: Math.floor((Math.random() * 100) + 1)
   });
 }, 1000);
