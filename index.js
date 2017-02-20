@@ -74,9 +74,9 @@ io.on('connection', function(client){
 });
 io.listen(8888);
 
-setInterval(function () {
+/*setInterval(function () {
   io.emit('data', {
     temperature: Math.floor((Math.random() * 100) + 1),
     light: Math.floor((Math.random() * 100) + 1)
   });
-}, 1000);
+}, 1000);*/
