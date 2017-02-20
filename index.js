@@ -79,4 +79,4 @@ setInterval(function () {
     temperature: 32,
     light: 10
   });
-});
+}, 1000);
