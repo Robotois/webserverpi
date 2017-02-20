@@ -73,3 +73,10 @@ io.on('connection', function(client){
   console.log('socket IO listening on port 8888');
 });
 io.listen(8888);
+
+setInterval(function () {
+  io.emit('data', {
+    temperature: 32,
+    light: 10
+  });
+});
