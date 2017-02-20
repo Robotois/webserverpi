@@ -5,6 +5,7 @@ var koa = require('koa');
 var app = koa();
 var child_process = require('child_process');
 const resetTois  =  require('./resetTois');
+const io = require('socket.io')();
 
 var exec, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 
@@ -35,6 +36,7 @@ function *post() {
           if (err) {
             console.log(err.toString());
           } else if (stdout !== "") {
+            io.emit('data', stdout);
             console.log(stdout);
           } else {
             console.log(stderr);
@@ -66,3 +68,8 @@ function *reset() {
 // listen
 app.listen(8082);
 console.log('listening on port 8082');
+
+io.on('connection', function(client){
+  console.log('socket IO listening on port 8888');
+});
+io.listen(8888);
