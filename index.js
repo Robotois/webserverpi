@@ -31,15 +31,15 @@ function *post() {
      data: JSON.stringify(data)
    };
    runner = spawn('node', ['codeRunner.js'], { env: env } );
-   ls.stdout.on('data', (data) => {
+   runner.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
    });
 
-   ls.stderr.on('data', (data) => {
+   runner.stderr.on('data', (data) => {
       console.log(`stderr: ${data}`);
    });
 
-   ls.on('close', (code) => {
+   runner.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
    });
 
