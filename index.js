@@ -3,11 +3,11 @@ var route = require('koa-route');
 var parse = require('co-body');
 var koa = require('koa');
 var app = koa();
-var child_process = require('child_process');
+var spawn = require('child_process').spawn;
 const resetTois  =  require('./resetTois');
 const io = require('socket.io')();
 
-var exec, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
+var runner, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 
 app.use(logger());
 
@@ -30,20 +30,19 @@ function *post() {
    env = {
      data: JSON.stringify(data)
    };
-   exec = child_process.exec('node codeRunner.js',
-        { env: env },
-        function (err, stdout, stderr) {
-          if (err) {
-            console.log(err.toString());
-          } else if (stdout !== "") {
-            io.emit('data', stdout);
-            console.log(stdout);
-          } else {
-            console.log(stderr);
-          }
-        }
-    );
-   exec.stdout.pipe(process.stdout);
+   runner = spawn('node', ['codeRunner.js'], { env: env } );
+   ls.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+   });
+
+   ls.stderr.on('data', (data) => {
+      console.log(`stderr: ${data}`);
+   });
+
+   ls.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+   });
+
    // killl exec whe process ends
    process.on('exit', function () {
      exec.kill();
@@ -57,7 +56,7 @@ function *post() {
 
 function *reset() {
    var data = yield parse(this);
-   exec.kill();
+   // exec.kill();
    resetTois(data);
    this.body = {
      success: true,
