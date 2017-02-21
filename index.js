@@ -32,11 +32,11 @@ function *post() {
    };
    runner = spawn('node', ['codeRunner.js'], { env: env } );
    runner.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
+      io.emit('data', data);
    });
 
    runner.stderr.on('data', (data) => {
-      console.log(`stderr: ${data}`);
+      io.emit('error', data);
    });
 
    runner.on('close', (code) => {
@@ -72,10 +72,3 @@ io.on('connection', function(client){
   console.log('socket IO listening on port 8888');
 });
 io.listen(8888);
-
-/*setInterval(function () {
-  io.emit('data', {
-    temperature: Math.floor((Math.random() * 100) + 1),
-    light: Math.floor((Math.random() * 100) + 1)
-  });
-}, 1000);*/
