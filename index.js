@@ -45,7 +45,7 @@ function *post() {
 
    // killl exec whe process ends
    process.on('exit', function () {
-     exec.kill();
+     runner.kill();
    });
 
    this.body = {
@@ -56,7 +56,7 @@ function *post() {
 
 function *reset() {
    var data = yield parse(this);
-   exec.kill();
+   runner.kill();
    //resetTois(data);
    this.body = {
      success: true,
