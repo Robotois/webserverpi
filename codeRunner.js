@@ -53,11 +53,11 @@ eval(data.code);
 }, 10000);*/
 
 process.on('SIGTERM', function () {
-  process.exit();
   console.log('SIGTERM');
+  process.exit();
 });
 
 process.on('SIGINT', function () {
-  process.exit();
   console.log('SIGINT');
+  process.exit();
 });
