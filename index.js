@@ -40,7 +40,6 @@ function *post() {
    });
 
    runner.on('close', (code) => {
-     console.log(arguments);
       console.log(`child process exited with code ${code}`);
    });
 
