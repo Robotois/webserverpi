@@ -4,7 +4,6 @@ var parse = require('co-body');
 var koa = require('koa');
 var app = koa();
 var spawn = require('child_process').spawn;
-const resetTois  =  require('./resetTois');
 const io = require('socket.io')();
 
 var runner, env;
@@ -30,6 +29,7 @@ function *post() {
    env = {
      data: JSON.stringify(data)
    };
+
    runner = spawn('node', ['codeRunner.js'], { env: env } );
    runner.stdout.on('data', (data) => {
       if (-1 === data.indexOf('Released')) {
@@ -59,7 +59,6 @@ function *post() {
 function *reset() {
    var data = yield parse(this);
    runner.kill();
-   //resetTois(data);
    this.body = {
      success: true,
      message: 'exito!'
