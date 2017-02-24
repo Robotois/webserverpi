@@ -32,11 +32,13 @@ function *post() {
    };
    runner = spawn('node', ['codeRunner.js'], { env: env } );
    runner.stdout.on('data', (data) => {
-      io.emit('data', data.toString());
+      if (-1 === data.indexOf('Released')) {
+        io.emit('data', data.toString());
+      }
    });
 
    runner.stderr.on('data', (data) => {
-      io.emit('data', data.toString());
+      io.emit('error', data.toString());
    });
 
    runner.on('close', (code) => {
