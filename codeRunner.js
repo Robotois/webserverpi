@@ -8,6 +8,7 @@ const Distance  =  require('../eModules/NodeLibrary/UltrasonicSensor');
 const Button  =  require('../eModules/NodeLibrary/ButtonModule');
 const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
 
+var light, led, temperature, lcd, rotatory, distance, button, ledRGB
 // get data from params
 const data = JSON.parse(process.env.data);
 const modules = data.modules;
@@ -47,14 +48,16 @@ if (modules.ledRGB && modules.ledRGB.port) {
 
 eval(data.code);
 
-setInterval(()=>{ // Proceso en estado ocioso
+/*setInterval(()=>{ // Proceso en estado ocioso
   true;
-}, 10000);
+}, 10000);*/
 
 process.on('SIGTERM', function () {
   process.exit();
+  console.log('SIGTERM');
 });
 
 process.on('SIGINT', function () {
   process.exit();
+  console.log('SIGINT');
 });

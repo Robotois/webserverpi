@@ -7,7 +7,7 @@ var spawn = require('child_process').spawn;
 const resetTois  =  require('./resetTois');
 const io = require('socket.io')();
 
-runner, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
+var runner, env;
 
 app.use(logger());
 
@@ -56,8 +56,8 @@ function *post() {
 
 function *reset() {
    var data = yield parse(this);
-   // exec.kill();
-   resetTois(data);
+   exec.kill();
+   //resetTois(data);
    this.body = {
      success: true,
      message: 'exito!'
