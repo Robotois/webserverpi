@@ -7,7 +7,7 @@ var spawn = require('child_process').spawn;
 const resetTois  =  require('./resetTois');
 const io = require('socket.io')();
 
-var runner, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
+runner, env, light, led, temperature, lcd, rotatory, distance, button, ledRGB;
 
 app.use(logger());
 
