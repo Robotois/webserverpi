@@ -88,7 +88,6 @@ function exitHandler(options, err) {
   process.exit();
 }
 
-
 process.on('SIGTERM', exitHandler);
 process.on('SIGINT', exitHandler);
 process.on('exit', exitHandler);
