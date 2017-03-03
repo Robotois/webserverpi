@@ -11,6 +11,8 @@ let runner;
 let env;
 
 app.use(logger());
+/* eslint-disable require-yield */
+
 /**
  * Renders the home layout
  * @returns {HTML} returns html body.
