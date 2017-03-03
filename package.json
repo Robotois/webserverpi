@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "robotois"
+    "robotois",
+    "pi server"
   ],
   "author": "manduks",
   "license": "MIT",
@@ -18,5 +19,13 @@
     "koa-route": "^2.4.2",
     "socket.io": "^1.7.3",
     "supervisor": "^0.11.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0"
   }
 }

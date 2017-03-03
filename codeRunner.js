@@ -1,14 +1,22 @@
 // robotios requires
 const Light = require('../eModules/NodeLibrary/LightSensor');
-const Led  =  require('../eModules/NodeLibrary/LEDModule');
-const Temperature  =  require('../eModules/NodeLibrary/TemperatureSensor');
-const LCD  =  require('../eModules/NodeLibrary/LCDModule');
-const Rotatory  =  require('../eModules/NodeLibrary/RotarySensor');
-const Distance  =  require('../eModules/NodeLibrary/UltrasonicSensor');
-const Button  =  require('../eModules/NodeLibrary/ButtonModule');
-const LedRGB  =  require('../eModules/NodeLibrary/RGBModule');
+const Led = require('../eModules/NodeLibrary/LEDModule');
+const Temperature = require('../eModules/NodeLibrary/TemperatureSensor');
+const LCD = require('../eModules/NodeLibrary/LCDModule');
+const Rotatory = require('../eModules/NodeLibrary/RotarySensor');
+const Distance = require('../eModules/NodeLibrary/UltrasonicSensor');
+const Button = require('../eModules/NodeLibrary/ButtonModule');
+const LedRGB = require('../eModules/NodeLibrary/RGBModule');
 
-var light, led, temperature, lcd, rotatory, distance, button, ledRGB
+/* eslint-disable one-var */
+let light,
+  led,
+  temperature,
+  lcd,
+  rotatory,
+  distance,
+  button,
+  ledRGB;
 // get data from params
 const data = JSON.parse(process.env.data);
 const modules = data.modules;
@@ -45,14 +53,18 @@ if (modules.button && modules.button.port) {
 if (modules.ledRGB && modules.ledRGB.port) {
   ledRGB = new LedRGB();
 }
-
+/* eslint-disable no-eval */
 eval(data.code);
 
-setInterval(()=>{ // Proceso en estado ocioso
-  true;
-}, 10000);
+setInterval(() => {}, 10000);
 
-function exitHandler(options, err) {
+/**
+ * Releases all components resources
+ * @param {object} options The options object.
+ * @param {object} err The error object.
+ * @returns {int} .
+ */
+function exitHandler() {
   // light sensor
   if (modules.light && modules.light.port) {
     light.release();

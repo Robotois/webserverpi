@@ -1,75 +1,88 @@
-var logger = require('koa-logger');
-var route = require('koa-route');
-var parse = require('co-body');
-var koa = require('koa');
-var app = koa();
-var spawn = require('child_process').spawn;
+const logger = require('koa-logger');
+const route = require('koa-route');
+const parse = require('co-body');
+const koa = require('koa');
+
+const app = koa();
+const spawn = require('child_process').spawn;
 const io = require('socket.io')();
 
-var runner, env;
+let runner;
+let env;
 
 app.use(logger());
+/**
+ * Renders the home layout
+ * @returns {HTML} returns html body.
+ */
+function* home() {
+  this.body = 'Hello World';
+}
+/**
+ * Renders the home layout
+ * @returns {JSON} returns JSON.
+ */
+function* post() {
+  const data = yield parse(this);
+  if (!data.code) {
+    this.body = {
+      success: false,
+      message: 'No code was provided',
+    };
+    return this.body;
+  }
+  env = {
+    data: JSON.stringify(data),
+  };
+
+  runner = spawn('node', ['codeRunner.js'], { env });
+  runner.stdout.on('data', (stdout) => {
+    if (data.indexOf('Released') === -1) {
+      io.emit('data', stdout.toString());
+    }
+  });
+
+  runner.stderr.on('data', (stderr) => {
+    io.emit('error', stderr.toString());
+  });
+
+  runner.on('close', (code) => {
+    /* eslint-disable no-console */
+    console.log(`child process exited with code ${code}`);
+  });
+
+   // killl exec whe process ends
+  process.on('exit', () => {
+    runner.kill();
+  });
+
+  this.body = {
+    success: true,
+    message: 'exito!',
+  };
+  return this.body;
+}
+/**
+ * Renders the home layout
+ * @returns {JSON} returns JSON.
+ */
+function* reset() {
+  runner.kill();
+  this.body = {
+    success: true,
+    message: 'exito!',
+  };
+}
 
 app.use(route.get('/', home));
 app.use(route.post('/post', post));
 app.use(route.post('/reset', reset));
 
-function *home() {
-  this.body = 'Hello World';
-}
-
-function *post() {
-   var data = yield parse(this);
-   if (!data.code) {
-     return this.body =  {
-       success: false,
-       message: 'No code was provided'
-     }
-   }
-   env = {
-     data: JSON.stringify(data)
-   };
-
-   runner = spawn('node', ['codeRunner.js'], { env: env } );
-   runner.stdout.on('data', (data) => {
-      if (-1 === data.indexOf('Released')) {
-        io.emit('data', data.toString());
-      }
-   });
-
-   runner.stderr.on('data', (data) => {
-      io.emit('error', data.toString());
-   });
-
-   runner.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
-   });
-
-   // killl exec whe process ends
-   process.on('exit', function () {
-     runner.kill();
-   });
-
-   this.body = {
-     success: true,
-     message: 'exito!'
-   };
-}
-
-function *reset() {
-   var data = yield parse(this);
-   runner.kill();
-   this.body = {
-     success: true,
-     message: 'exito!'
-   };
-}
-
 // listen
 app.listen(8082);
 console.log('listening on port 8082');
 
-io.on('connection', function(client){
+io.on('connection', () => {
   console.log('socket IO listening on port 8888');
 });
 io.listen(8888);
