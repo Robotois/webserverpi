@@ -1,7 +1,7 @@
 // robotios requires
 const Light = require('../eModules/NodeLibrary/LightSensor');
-// const Led = require('../eModules/NodeLibrary/LEDModule');
-const Led = require('robotois-led');
+const Led = require('../eModules/NodeLibrary/LEDModule');
+// const Led = require('robotois-led');
 const Temperature = require('../eModules/NodeLibrary/TemperatureSensor');
 const LCD = require('../eModules/NodeLibrary/LCDModule');
 const Rotatory = require('../eModules/NodeLibrary/RotarySensor');
