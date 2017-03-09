@@ -39,7 +39,7 @@ function* post() {
 
   runner = spawn('node', ['codeRunner.js'], { env });
   runner.stdout.on('data', (stdout) => {
-    if (data.indexOf('Released') === -1) {
+    if (stdout.indexOf('Released') === -1) {
       io.emit('data', stdout.toString());
     }
   });
