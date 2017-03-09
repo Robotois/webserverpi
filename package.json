@@ -10,7 +10,7 @@
     "robotois",
     "pi server"
   ],
-  "author": "manduks",
+  "author": "iam@armando.mx",
   "license": "MIT",
   "dependencies": {
    "co-body": "^4.2.0",

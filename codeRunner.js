@@ -1,13 +1,16 @@
 // robotios requires
-const Light = require('../eModules/NodeLibrary/LightSensor');
-const Led = require('../eModules/NodeLibrary/LEDModule');
-// const Led = require('robotois-led');
-const Temperature = require('../eModules/NodeLibrary/TemperatureSensor');
-const LCD = require('../eModules/NodeLibrary/LCDModule');
-const Rotatory = require('../eModules/NodeLibrary/RotarySensor');
+const Light = require('robotois-light-sensor');
+const Led = require('robotois-led');
+const Temperature = require('robotois-temperature-sensor');
+const LCD = require('robotois-lcd-display');
+const Rotatory = require('robotois-rotatory-sensor');
+const Button = require('robotois-button');
+const Line = require('robotois-line-sensor');
+const Motors = require('robotois-motors');
+
 const Distance = require('../eModules/NodeLibrary/UltrasonicSensor');
-const Button = require('../eModules/NodeLibrary/ButtonModule');
 const LedRGB = require('../eModules/NodeLibrary/RGBModule');
+
 
 /* eslint-disable one-var */
 let light,
