@@ -45,7 +45,7 @@ function* post() {
   });
 
   runner.stderr.on('data', (stderr) => {
-    io.emit('error', stderr.toString());
+    io.emit('stderr', stderr.toString());
   });
 
   runner.on('close', (code) => {
@@ -53,7 +53,7 @@ function* post() {
     console.log(`child process exited with code ${code}`);
   });
 
-   // killl exec whe process ends
+  // killl exec whe process ends
   process.on('exit', () => {
     runner.kill();
   });
