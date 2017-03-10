@@ -26,6 +26,7 @@ function* home() {
  */
 function* post() {
   const data = yield parse(this);
+  console.log(data);
   if (!data.code) {
     this.body = {
       success: false,

@@ -11,6 +11,8 @@ const Motors = require('robotois-motors');
 /* eslint-enable*/
 const Distance = require('../eModules/NodeLibrary/UltrasonicSensor');
 const LedRGB = require('../eModules/NodeLibrary/RGBModule');
+const Servos = require('../eModules/NodeLibrary/ServosModule');
+
 
 /* eslint-disable one-var */
 let light,
@@ -20,7 +22,9 @@ let light,
   rotatory,
   distance,
   button,
-  ledRGB;
+  ledRGB,
+  motors,
+  servos;
 // get data from params
 const data = JSON.parse(process.env.data);
 const modules = data.modules;
@@ -56,6 +60,14 @@ if (modules.button && modules.button.port) {
 // ledRGB
 if (modules.ledRGB && modules.ledRGB.port) {
   ledRGB = new LedRGB();
+}
+// ledRGB
+if (modules.servos && modules.servos.port) {
+  servos = new Servos(0);
+}
+// ledRGB
+if (modules.motors && modules.motors.port) {
+  motors = new Motors();
 }
 /* eslint-disable no-eval */
 eval(data.code);
@@ -100,6 +112,14 @@ function exitHandler() {
   // ledRGB
   if (modules.ledRGB && modules.ledRGB.port) {
     ledRGB.release();
+  }
+  // servos
+  if (modules.servos && modules.servos.port) {
+    servos.release();
+  }
+  // motors
+  if (modules.motors && modules.motors.port) {
+    motors.release();
   }
   process.exit();
 }
