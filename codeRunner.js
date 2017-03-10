@@ -23,8 +23,8 @@ let light,
   distance,
   button,
   ledRGB,
-  motors,
-  servos;
+  motor,
+  servo;
 // get data from params
 const data = JSON.parse(process.env.data);
 const modules = data.modules;
@@ -63,11 +63,11 @@ if (modules.ledRGB && modules.ledRGB.port) {
 }
 // ledRGB
 if (modules.servo && modules.servo.port) {
-  servos = new Servos(0);
+  servo = new Servos(0);
 }
 // ledRGB
 if (modules.motor && modules.motor.port) {
-  motors = new Motors();
+  motor = new Motors();
 }
 /* eslint-disable no-eval */
 eval(data.code);
@@ -115,11 +115,11 @@ function exitHandler() {
   }
   // servos
   if (modules.servo && modules.servo.port) {
-    servos.release();
+    servo.release();
   }
   // motors
   if (modules.motor && modules.motor.port) {
-    motors.release();
+    motor.release();
   }
   process.exit();
 }
