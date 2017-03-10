@@ -62,11 +62,11 @@ if (modules.ledRGB && modules.ledRGB.port) {
   ledRGB = new LedRGB();
 }
 // ledRGB
-if (modules.servos && modules.servos.port) {
+if (modules.servo && modules.servo.port) {
   servos = new Servos(0);
 }
 // ledRGB
-if (modules.motors && modules.motors.port) {
+if (modules.motor && modules.motor.port) {
   motors = new Motors();
 }
 /* eslint-disable no-eval */
@@ -114,11 +114,11 @@ function exitHandler() {
     ledRGB.release();
   }
   // servos
-  if (modules.servos && modules.servos.port) {
+  if (modules.servo && modules.servo.port) {
     servos.release();
   }
   // motors
-  if (modules.motors && modules.motors.port) {
+  if (modules.motor && modules.motor.port) {
     motors.release();
   }
   process.exit();
