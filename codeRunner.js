@@ -8,11 +8,10 @@ const Rotatory = require('robotois-rotatory-sensor');
 const Button = require('robotois-button');
 const Line = require('robotois-line-sensor');
 const Motors = require('robotois-motors');
+const Distance = require('robotois-distance-sensor');
+const LedRGB = require('robotois-rgb-leds');
+const Servos = require('robotois-servos');
 /* eslint-enable*/
-const Distance = require('../eModules/NodeLibrary/UltrasonicSensor');
-const LedRGB = require('../eModules/NodeLibrary/RGBModule');
-const Servos = require('../eModules/NodeLibrary/ServosModule');
-
 
 /* eslint-disable one-var */
 let light,
@@ -69,6 +68,7 @@ if (modules.servo && modules.servo.port) {
 if (modules.motor && modules.motor.port) {
   motor = new Motors();
 }
+console.log(data);
 /* eslint-disable no-eval */
 eval(data.code);
 

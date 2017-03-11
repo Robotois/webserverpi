@@ -26,7 +26,10 @@
    "robotois-line-sensor": "^1.0.1",
    "robotois-motors": "^1.0.1",
    "robotois-rotatory-sensor": "^1.0.0",
-   "robotois-temperature-sensor": "^1.0.0"
+   "robotois-temperature-sensor": "^1.0.0",
+   "robotois-distance-sensor": "^1.0.0",
+   "robotois-rgb-leds": "^1.0.0",
+   "robotois-servos": "^1.0.0"
  },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
