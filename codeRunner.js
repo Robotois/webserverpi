@@ -68,7 +68,6 @@ if (modules.servo && modules.servo.port) {
 if (modules.motor && modules.motor.port) {
   motor = new Motors();
 }
-console.log(data);
 /* eslint-disable no-eval */
 eval(data.code);
 
