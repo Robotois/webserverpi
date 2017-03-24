@@ -120,7 +120,7 @@ module.exports = function App(wifiManager) {
   app.use(route.post('/post', post));
   app.use(route.post('/reset', reset));
   app.use(route.post('/enable-wifi', enableWifi));
-  app.use(route.post('/rescan-wifi', rescanWifi));
+  app.use(route.get('/rescan-wifi', rescanWifi));
 
   // listen
   app.listen(8082);
