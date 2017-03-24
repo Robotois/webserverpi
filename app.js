@@ -114,7 +114,7 @@ module.exports = function App(wifiManager) {
     console.log('Server got /rescan_wifi');
     iwlist((error, result) => {
       console.log(error);
-      console.log(result);
+      console.log(JSON.stringify(result, null, '\t'));
     });
     return this.body;
   }
