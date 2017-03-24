@@ -56,6 +56,6 @@ module.exports = function App(wifiManager) {
   app.use(route.get('/rescan-wifi', rescanWifi));
 
   // listen
-  app.listen(config.port);
+  app.listen(config.server.port);
   console.log('listening on port 8082');
 };

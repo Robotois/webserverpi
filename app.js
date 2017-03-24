@@ -82,11 +82,11 @@ module.exports = function App(wifiManager) {
   app.use(route.post('/reset', reset));
 
   // listen
-  app.listen(config.port);
+  app.listen(config.server.port);
   console.log('listening on port 8082');
 
   io.on('connection', () => {
     console.log('socket IO listening on port 8888');
   });
-  io.listen(config.ioPort);
+  io.listen(config.server.ioPort);
 };
