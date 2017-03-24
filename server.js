@@ -23,7 +23,7 @@ async.series([
                 console.log("\nWifi is enabled, and IP " + result_ip + " assigned");
             } else {
                 console.log("\nWifi is not enabled, Enabling AP for self-configure");
-                done(true);
+                return done(true);
             }
             done(error);
         });
