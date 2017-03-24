@@ -4,7 +4,12 @@
   "description": "The webserver that is going to live inside the pi",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "provision": "apt-get update -y && apt-get install isc-dhcp-server hostapd iw -y",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Robotois/webserverpi.git"
   },
   "keywords": [
     "robotois",
@@ -12,6 +17,7 @@
   ],
   "author": "iam@armando.mx",
   "license": "MIT",
+  "homepage": "https://github.com/Robotois/webserverpi",
   "dependencies": {
    "co-body": "^4.2.0",
    "koa": "^1.2.4",
