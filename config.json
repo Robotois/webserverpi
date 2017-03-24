@@ -19,6 +19,7 @@
     },
 
     "server": {
-        "port": 88
+        "port": 8082,
+        "ioPort": 8888
     }
 }
