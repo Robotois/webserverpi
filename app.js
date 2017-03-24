@@ -113,8 +113,10 @@ module.exports = function App(wifiManager) {
   function* rescanWifi() {
     console.log('Server got /rescan_wifi');
     iwlist((error, result) => {
+      console.log(error);
       console.log(result);
     });
+    return this.body;
   }
   app.use(route.get('/', home));
   app.use(route.post('/post', post));
