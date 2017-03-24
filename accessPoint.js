@@ -34,13 +34,11 @@ module.exports = function App(wifiManager) {
         };
         return this.body;
       }
+      console.log('Wifi Enabled! - Exiting');
       this.body = {
         success: true,
         message: 'Wifi Enabled! - Exiting',
       };
-      // Success! - exit
-      console.log('Wifi Enabled! - Exiting');
-      return this.body;
     });
   }
   /* eslint-disable require-yield */
@@ -49,7 +47,6 @@ module.exports = function App(wifiManager) {
     iwlist((error, result) => {
       console.log(JSON.stringify(result, null, '\t'));
       this.body = error || result;
-      return this.body;
     });
   }
   app.use(route.post('/enable-wifi', enableWifi));
