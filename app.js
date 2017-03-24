@@ -5,7 +5,7 @@ const koa = require('koa');
 const config = require('./config.json');
 const io = require('socket.io')();
 const spawn = require('child_process').spawn;
-
+const iwlist = require('./lib/iwList');
 
 module.exports = function App(wifiManager) {
   let runner;
@@ -110,11 +110,17 @@ module.exports = function App(wifiManager) {
       return this.body;
     });
   }
-
+  function* rescanWifi() {
+    console.log('Server got /rescan_wifi');
+    iwlist((error, result) => {
+      console.log(result);
+    });
+  }
   app.use(route.get('/', home));
   app.use(route.post('/post', post));
   app.use(route.post('/reset', reset));
-  app.post('/enable-wifi', enableWifi);
+  app.use(route.post('/enable-wifi', enableWifi));
+  app.user(route.post('/rescan-wifi', rescanWifi));
 
   // listen
   app.listen(8082);
