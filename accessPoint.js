@@ -44,15 +44,21 @@ module.exports = function App(wifiManager) {
     });
   }
   /* eslint-disable require-yield */
-  function* rescanWifi() {
+  function* listWifis() {
     console.log('Server got /rescan_wifi');
-    this.body = yield iwList((error, result) => {
-      console.log(JSON.stringify(result, null, '\t'));
-      return error || result;
+    this.body = new Promise((fulfill, reject) => {
+      iwList((error, result) => {
+        console.log(JSON.stringify(result, null, '\t'));
+        if (error) {
+          reject(error);
+        } else {
+          fulfill(result);
+        }
+      });
     });
   }
   app.use(route.post('/enable-wifi', enableWifi));
-  app.use(route.get('/rescan-wifi', rescanWifi));
+  app.use(route.get('/list-wifis', listWifis));
 
   // listen
   app.listen(config.server.port);
