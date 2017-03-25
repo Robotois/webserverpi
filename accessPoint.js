@@ -52,7 +52,7 @@ module.exports = function App(wifiManager) {
         if (error) {
           reject(error);
         } else {
-          resolve(result);
+          resolve(result[0].scan_results);
         }
       });
     });
