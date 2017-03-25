@@ -46,13 +46,13 @@ module.exports = function App(wifiManager) {
   /* eslint-disable require-yield */
   function* listWifis() {
     console.log('Server got /rescan_wifi');
-    this.body = new Promise((fulfill, reject) => {
+    this.body = yield new Promise((resolve, reject) => {
       iwList((error, result) => {
         console.log(JSON.stringify(result, null, '\t'));
         if (error) {
           reject(error);
         } else {
-          fulfill(result);
+          resolve(result);
         }
       });
     });
