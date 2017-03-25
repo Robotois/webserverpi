@@ -44,12 +44,12 @@ module.exports = function App(wifiManager) {
     });
   }
   /* eslint-disable require-yield */
-  function* rescanWifi(ctx) {
+  function* rescanWifi() {
     console.log('Server got /rescan_wifi');
-    iwList((error, result) => {
+    this.body = yield iwList((error, result) => {
       console.log(JSON.stringify(result, null, '\t'));
+      return error || result;
     });
-    ctx.body = 'Hola';
   }
   app.use(route.post('/enable-wifi', enableWifi));
   app.use(route.get('/rescan-wifi', rescanWifi));
