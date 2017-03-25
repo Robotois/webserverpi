@@ -3,7 +3,7 @@ const route = require('koa-route');
 const parse = require('co-body');
 const koa = require('koa');
 const config = require('./config.json');
-const iwlist = require('./lib/iwList');
+const iwList = require('./lib/iwList');
 
 module.exports = function App(wifiManager) {
   const app = koa();
@@ -34,20 +34,22 @@ module.exports = function App(wifiManager) {
         };
         return this.body;
       }
-      console.log('Wifi Enabled! - Exiting');
       this.body = {
         success: true,
         message: 'Wifi Enabled! - Exiting',
       };
+      // Success! - exit
+      console.log('Wifi Enabled! - Exiting');
+      return this.body;
     });
   }
   /* eslint-disable require-yield */
   function* rescanWifi() {
     console.log('Server got /rescan_wifi');
-    iwlist((error, result) => {
+    iwList((error, result) => {
       console.log(JSON.stringify(result, null, '\t'));
-      this.body = error || result;
     });
+    this.body = 'Hola';
   }
   app.use(route.post('/enable-wifi', enableWifi));
   app.use(route.get('/rescan-wifi', rescanWifi));
