@@ -5,6 +5,7 @@ const koa = require('koa');
 const config = require('./config.json');
 const io = require('socket.io')();
 const spawn = require('child_process').spawn;
+const iwList = require('./lib/iwList');
 
 module.exports = function App(wifiManager) {
   let runner;
@@ -111,6 +112,19 @@ module.exports = function App(wifiManager) {
     });
   }
   app.use(route.post('/enable-wifi', enableWifi));
+
+  function* listWifis() {
+    this.body = yield new Promise((resolve, reject) => {
+      iwList((error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result[0].scan_results);
+        }
+      });
+    });
+  }
+  app.use(route.post('/list-wifis', listWifis));
 
   // listen
   app.listen(config.server.port);
