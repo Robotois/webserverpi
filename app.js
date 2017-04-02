@@ -81,6 +81,40 @@ module.exports = function App(wifiManager) {
   app.use(route.post('/post', post));
   app.use(route.post('/reset', reset));
 
+  function* enableWifi() {
+    const data = yield parse(this);
+    const connInfo = {
+      wifi_ssid: data.wifi_ssid,
+      wifi_passcode: data.wifi_passcode,
+    };
+
+    // TODO: If wifi did not come up correctly, it should fail
+    // currently we ignore ifup failures.
+    wifiManager.enable_wifi_mode(connInfo, (error) => {
+      if (error) {
+        console.log(`Enable Wifi ERROR: ${error}`);
+        console.log('Attempt to re-enable AP mode');
+        wifiManager.enable_ap_mode(config.access_point.ssid, (error2) => {
+          console.log(error2);
+          console.log('... AP mode reset');
+        });
+        this.body = {
+          success: false,
+          message: error,
+        };
+        return this.body;
+      }
+      this.body = {
+        success: true,
+        message: 'Wifi Enabled! - Exiting',
+      };
+      // Success! - exit
+      console.log('Wifi Enabled! - Exiting');
+      return this.body;
+    });
+  }
+  app.use(route.post('/enable-wifi', enableWifi));
+
   // listen
   app.listen(config.server.port);
   console.log('listening on port 8082');
