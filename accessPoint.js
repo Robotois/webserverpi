@@ -13,7 +13,6 @@ module.exports = function App() {
   function* listWifis() {
     this.body = yield new Promise((resolve, reject) => {
       iwList((error, result) => {
-        console.log(JSON.stringify(result, null, '\t'));
         if (error) {
           reject(error);
         } else {

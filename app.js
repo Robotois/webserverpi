@@ -87,30 +87,26 @@ module.exports = function App(wifiManager) {
       wifi_ssid: data.wifi_ssid,
       wifi_passcode: data.wifi_passcode,
     };
-
     // TODO: If wifi did not come up correctly, it should fail
     // currently we ignore ifup failures.
-    wifiManager.enable_wifi_mode(connInfo, (error) => {
-      if (error) {
-        console.log(`Enable Wifi ERROR: ${error}`);
-        console.log('Attempt to re-enable AP mode');
-        wifiManager.enable_ap_mode(config.access_point.ssid, (error2) => {
-          console.log(error2);
-          console.log('... AP mode reset');
-        });
-        this.body = {
-          success: false,
-          message: error,
-        };
-        return this.body;
-      }
-      this.body = {
-        success: true,
-        message: 'Wifi Enabled! - Exiting',
-      };
-      // Success! - exit
-      console.log('Wifi Enabled! - Exiting');
-      return this.body;
+    this.body = yield new Promise((resolve, reject) => {
+      wifiManager.enable_wifi_mode(connInfo, (error) => {
+        if (error) {
+          console.log(`Enable Wifi ERROR: ${error}`);
+          console.log('Attempt to re-enable AP mode');
+          wifiManager.enable_ap_mode(config.access_point.ssid, (error2) => {
+            console.log(error2);
+            console.log('... AP mode reset');
+          });
+          reject(error);
+        } else {
+          console.log('Wifi Enabled! - Exiting');
+          resolve({
+            success: true,
+            message: 'Wifi Enabled! - Exiting',
+          });
+        }
+      });
     });
   }
   app.use(route.post('/enable-wifi', enableWifi));
