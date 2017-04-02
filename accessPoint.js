@@ -45,7 +45,6 @@ module.exports = function App(wifiManager) {
   }
   /* eslint-disable require-yield */
   function* listWifis() {
-    console.log('Server got /rescan_wifi');
     this.body = yield new Promise((resolve, reject) => {
       iwList((error, result) => {
         console.log(JSON.stringify(result, null, '\t'));
@@ -58,7 +57,7 @@ module.exports = function App(wifiManager) {
     });
   }
   app.use(route.post('/enable-wifi', enableWifi));
-  app.use(route.get('/list-wifis', listWifis));
+  app.use(route.post('/list-wifis', listWifis));
 
   // listen
   app.listen(config.server.port);
