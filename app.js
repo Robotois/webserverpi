@@ -87,6 +87,7 @@ module.exports = function App(wifiManager) {
       wifi_ssid: data.wifi_ssid,
       wifi_passcode: data.wifi_passcode,
     };
+    console.log(connInfo);
     // TODO: If wifi did not come up correctly, it should fail
     // currently we ignore ifup failures.
     this.body = yield new Promise((resolve, reject) => {
