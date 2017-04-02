@@ -84,8 +84,8 @@ module.exports = function App(wifiManager) {
   function* enableWifi() {
     const data = yield parse(this);
     const connInfo = {
-      wifi_ssid: data.wifi_ssid,
-      wifi_passcode: data.wifi_passcode,
+      wifi_ssid: data.ssid,
+      wifi_passcode: data.passcode,
     };
     console.log(connInfo);
     // TODO: If wifi did not come up correctly, it should fail
