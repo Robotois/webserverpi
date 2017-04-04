@@ -16,12 +16,13 @@ async.series([
         });
     },
     // if we are calling it from the reset button
-    function reboot_network_interfaces(done) {
-        console.log(process.argv);
+    function forceRestartAp(done) {
+        console.log(process.argv[2]);
         if (process.argv[2] === true) {
           console.log(process.argv[2]);
-            return done(true);
+          return done(true);
         }
+        return done();
     },
 
     // 2. Check if wifi is enabled / connected
