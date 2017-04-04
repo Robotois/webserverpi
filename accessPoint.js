@@ -29,6 +29,7 @@ module.exports = function App(wifiManager) {
     const connInfo = {
       wifi_ssid: data.ssid,
       wifi_passcode: data.passcode,
+      ip_addr: '192.168.0.88',
     };
     console.log(connInfo);
     // TODO: If wifi did not come up correctly, it should fail
