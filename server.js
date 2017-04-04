@@ -15,6 +15,12 @@ async.series([
             done(error);
         });
     },
+    // if we are calling it from the reset button
+    function reboot_network_interfaces(next_step) {
+        if (process.argv[2] === true) {
+            return done(true);
+        }
+    },
 
     // 2. Check if wifi is enabled / connected
     function test_is_wifi_enabled(done) {
