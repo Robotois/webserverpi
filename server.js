@@ -16,9 +16,10 @@ async.series([
         });
     },
     // if we are calling it from the reset button
-    function reboot_network_interfaces(next_step) {
+    function reboot_network_interfaces(done) {
         console.log(process.argv);
         if (process.argv[2] === true) {
+          console.log(process.argv[2]);
             return done(true);
         }
     },
