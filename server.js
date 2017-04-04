@@ -17,8 +17,7 @@ async.series([
     },
     // if we are calling it from the reset button
     function forceRestartAp(done) {
-        console.log(process.argv[2]);
-        if (process.argv[2] === true) {
+        if (process.argv[2] === '--ap') {
           console.log(process.argv[2]);
           return done(true);
         }
