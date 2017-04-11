@@ -5,7 +5,7 @@ const options = {
   driver: 'nl80211',
   hw_mode: 'g',
   interface: 'wlan0',
-  ssid: 'ROBOTOIS-KIT',
+  ssid: 'ROBOTOIS-KIT88',
   wpa: 2,
   wpa_passphrase: 'robotois',
 };
