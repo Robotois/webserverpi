@@ -19,7 +19,7 @@ async.series(
             console.log(' * Dependency error, did you run `sudo npm run-script provision`?');
           }
           done(error);
-        },
+        }
       );
     },
 
@@ -40,7 +40,7 @@ async.series(
     // 3. Start the webserver to configure the kit
     function startServer(done) {
       require('./index.js')(done); // eslint-disable-line
-    },
+    }
   ],
   (error) => {
     if (error === true) {
@@ -57,7 +57,7 @@ async.series(
           // Host HTTP server while functioning as AP, the "api.js"
           function startServer() {
             require('./accessPoint.js')(); // eslint-disable-line
-          },
+          }
         ],
         (error1) => {
           console.log(`ERROR: ${error1}`); // eslint-disable-line
