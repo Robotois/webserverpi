@@ -27,6 +27,7 @@ module.exports = function App() {
     });
   }
   app.use(route.post('/list-wifis', listWifis));
+  app.use(route.get('/list-wifis', listWifis));
   /**
    * It sets wifi credentials
    * @returns {JSON} response object
