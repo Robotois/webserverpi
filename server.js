@@ -34,7 +34,7 @@ async.series(
 
     // 2. Check if we need to configure for first time
     function checkIfKitIsReady(done) {
-      if (os.hostname() === 'raspberrypi') {
+      if (os.hostname().indexOf('robotois') === -1) {
         return done(true);
       }
       return done();
@@ -52,7 +52,7 @@ async.series(
         [
           // Turn RPI into an access point
           function enableAP(done) {
-            setup.hostname.save('robotois-config');
+            // setup.hostname.save('robotoisconfig');
             hostapd.enable(config.accessPoint, (err) => {
               console.log(err || 'AP created'); // eslint-disable-line
               done(err);

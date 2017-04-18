@@ -46,7 +46,8 @@ module.exports = function App() {
         if (err) {
           reject(err);
         } else {
-          setup.hostname.save('robotois-kit-02');
+          setup.hostname.save('robotois02');
+          // we need to reboot to set new host name;
           resolve();
         }
       });
