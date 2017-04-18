@@ -8,20 +8,18 @@ const config = require('./config.json');
 async.series(
   [
     // 1. Check if we have the required dependencies installed
-    function checkDependencies(done) {
-      dependencyManager.checkDeps(
-        {
-          binaries: ['dhcpd', 'hostapd', 'iw'],
-          files: ['/etc/init.d/isc-dhcp-server'],
-        },
-        (error) => {
-          if (error) {
-            console.log(' * Dependency error, did you run `sudo npm run-script provision`?');
-          }
-          done(error);
-        },
-      );
+    function checkDeps(done) {
+      dependencyManager.checkDeps({
+        binaries: ['dhcpd', 'hostapd', 'iw'],
+        files: ['/etc/init.d/isc-dhcp-server'],
+      }, function cb(error) {
+        if (error) {
+          console.log(' * Dependency error, did you run `sudo npm run-script provision`?');
+        }
+        done(error);
+      });
     },
+
     // 2.- if we are calling it from the reset button
     function forceRestartAp(done) {
       if (process.argv[2] === '--ap') {
