@@ -23,7 +23,7 @@ async.series(
       );
     },
   ],
-  (error) => {
+  function (error) {
     console.log(`ERROR: ${error}`);
   },
 );
