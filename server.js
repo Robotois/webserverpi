@@ -55,11 +55,9 @@ async.series(
           function startServer() {
             require('./accessPoint.js')(); // eslint-disable-line
           },
-        ],
-        (e) => {
-          console.log(`ERROR: ${e}`);
-        },
-      );
+        ], function e(error) {
+        console.log(`ERROR: ${  error}`); // eslint-disable-line
+      });
     } else {
       console.log(`ERROR: ${error}`);
     }
