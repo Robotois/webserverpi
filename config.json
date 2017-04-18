@@ -8,7 +8,7 @@
       "interface": "wlan0",
       "ssid": "ROBOTOIS-KIT88",
       "wpa": 2,
-      "wpa_passphrase": "robotois",
+      "wpa_passphrase": "robotois"
     },
     "server": {
         "port": 8082,
