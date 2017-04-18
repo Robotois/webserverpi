@@ -66,5 +66,5 @@ async.series(
     } else {
       console.log(`ERROR: ${error}`);
     }
-  },
+  }
 );
