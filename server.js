@@ -12,7 +12,7 @@ async.series(
       dependencyManager.checkDeps(
         {
           binaries: ['dhcpd', 'hostapd', 'iw'],
-          files: ['/etc/init.d/isc-dhcp-server'],
+          files: ['/etc/init.d/isc-dhcp-server']
         },
         (error) => {
           if (error) {
@@ -33,8 +33,10 @@ async.series(
 
     // 2. Check if we need to configure for first time
     function checkIfKitIsReady(done) {
-      console.log(os.hostname());
-      return done('Error gacho camacho');
+      if (os.hostname() === 'raspberrypi') {
+        return done(true);
+      }
+      return done();
     },
 
     // 3. Start the webserver to configure the kit

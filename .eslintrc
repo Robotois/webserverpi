@@ -20,6 +20,7 @@
             "MethodDefinition": true,
             "ClassDeclaration": true
         }
-    }]
+    }],
+    "comma-dangle": ["error", "never"]
   }
 }
