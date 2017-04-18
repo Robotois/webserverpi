@@ -19,7 +19,7 @@ async.series(
             console.log(' * Dependency error, did you run `sudo npm run-script provision`?');
           }
           done(error);
-        },
+        }
       );
     },
 
