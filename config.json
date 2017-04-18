@@ -7,7 +7,6 @@
       "hw_mode": "g",
       "interface": "wlan0",
       "ssid": "ROBOTOIS-KIT88",
-      "wpa": 2,
       "wpa_passphrase": "robotois"
     },
     "server": {
