@@ -14,7 +14,7 @@ async.series(
           binaries: ['dhcpd', 'hostapd', 'iw'],
           files: ['/etc/init.d/isc-dhcp-server'],
         },
-        (error) => {
+        function (error) {
           if (error) {
             console.log(' * Dependency error, did you run `sudo npm run-script provision`?');
           }
