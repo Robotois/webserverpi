@@ -38,7 +38,7 @@ async.series(
 
     // 3. Start the webserver to configure the kit
     function startServer(done) {
-      require('./index.js')(done);   // eslint-disable-line
+      require('./index.js')(done); // eslint-disable-line
     },
   ],
   (error) => {
@@ -49,13 +49,13 @@ async.series(
           // Turn RPI into an access point
           function enableAP(done) {
             hostapd.enable(config.accessPoint, (err) => {
-              console.log(err || 'AP created');  // eslint-disable-line
+              console.log(err || 'AP created'); // eslint-disable-line
               done(err);
             });
           },
           // Host HTTP server while functioning as AP, the "api.js"
-          function start_http_server(done) {
-            require('./accessPoint.js')(wifiManager, done);
+          function startServer() {
+            require('./accessPoint.js')(); // eslint-disable-line
           },
         ],
         (e) => {
