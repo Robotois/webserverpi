@@ -2,6 +2,7 @@ const hostapd = require('wireless-tools/hostapd');
 const dependencyManager = require('./lib/dependencyManager')();
 const async = require('async');
 const os = require('os');
+const setup = require('setup')();
 
 const config = require('./config.json');
 
@@ -51,6 +52,7 @@ async.series(
         [
           // Turn RPI into an access point
           function enableAP(done) {
+            setup.hostname.save('robotois-config');
             hostapd.enable(config.accessPoint, (err) => {
               console.log(err || 'AP created'); // eslint-disable-line
               done(err);

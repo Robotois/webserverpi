@@ -3,6 +3,9 @@ const route = require('koa-route');
 const parse = require('co-body');
 const koa = require('koa');
 const config = require('./config.json');
+const iwlist = require('wireless-tools/iwlist');
+const setup = require('setup')();
+const wpaSupplicant = require('wireless-tools/wpa_supplicant');
 
 module.exports = function App() {
   const app = koa();
@@ -13,11 +16,15 @@ module.exports = function App() {
  * @returns {JSON} the list of wifis
  */
   function* listWifis() {
-    const data = yield parse(this);
-    this.body = {
-      message: 'listWifis',
-      data,
-    };
+    this.body = yield new Promise((resolve, reject) => {
+      iwlist.scan('wlan0', (error, networks) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(networks);
+        }
+      });
+    });
   }
   app.use(route.post('/list-wifis', listWifis));
   /**
@@ -26,7 +33,23 @@ module.exports = function App() {
    */
   function* enableWifi() {
     const data = yield parse(this);
-    this.body = data;
+    const options = {
+      interface: 'wlan0',
+      ssid: data.ssid,
+      passphrase: data.passcode,
+      driver: 'nl80211'
+    };
+
+    this.body = yield new Promise((resolve, reject) => {
+      wpaSupplicant.enable(options, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          setup.hostname.save('robotois-kit-02');
+          resolve();
+        }
+      });
+    });
   }
   app.use(route.post('/enable-wifi', enableWifi));
 
