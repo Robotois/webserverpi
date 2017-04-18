@@ -25,5 +25,5 @@ async.series(
   ],
   function (error) {
     console.log(`ERROR: ${error}`);
-  },
+  }
 );
