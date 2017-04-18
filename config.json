@@ -1,0 +1,17 @@
+{
+    "wifiInterface": "wlan0",
+    "wifiDriver_type": "nl80211",
+    "accessPoint": {
+      "channel": 6,
+      "driver": "nl80211",
+      "hw_mode": "g",
+      "interface": "wlan0",
+      "ssid": "ROBOTOIS-KIT88",
+      "wpa": 2,
+      "wpa_passphrase": "robotois",
+    },
+    "server": {
+        "port": 8082,
+        "ioPort": 8888
+    }
+}
