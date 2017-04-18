@@ -9,15 +9,18 @@ async.series(
   [
     // 1. Check if we have the required dependencies installed
     function checkDeps(done) {
-      dependencyManager.checkDeps({
-        binaries: ['dhcpd', 'hostapd', 'iw'],
-        files: ['/etc/init.d/isc-dhcp-server'],
-      }, function cb(error) {
-        if (error) {
-          console.log(' * Dependency error, did you run `sudo npm run-script provision`?');
-        }
-        done(error);
-      });
+      dependencyManager.checkDeps(
+        {
+          binaries: ['dhcpd', 'hostapd', 'iw'],
+          files: ['/etc/init.d/isc-dhcp-server'],
+        },
+        (error) => {
+          if (error) {
+            console.log(' * Dependency error, did you run `sudo npm run-script provision`?');
+          }
+          done(error);
+        },
+      );
     },
 
     // 2.- if we are calling it from the reset button
@@ -39,14 +42,14 @@ async.series(
       require('./index.js')(done); // eslint-disable-line
     },
   ],
-  function mainError(error) {
+  (error) => {
     if (error === true) {
       // we need to set up the AP
       async.series(
         [
           // Turn RPI into an access point
           function enableAP(done) {
-            hostapd.enable(config.accessPoint, function apError(err) {
+            hostapd.enable(config.accessPoint, (err) => {
               console.log(err || 'AP created'); // eslint-disable-line
               done(err);
             });
@@ -55,11 +58,13 @@ async.series(
           function startServer() {
             require('./accessPoint.js')(); // eslint-disable-line
           },
-        ], function serverError(error1) {
-        console.log(`ERROR: ${  error1}`); // eslint-disable-line
-      });
+        ],
+        (error1) => {
+          console.log(`ERROR: ${error1}`); // eslint-disable-line
+        },
+      );
     } else {
       console.log(`ERROR: ${error}`);
     }
-  }
+  },
 );
