@@ -61,7 +61,7 @@ async.series(
         ],
         (error1) => {
           console.log(`ERROR: ${error1}`); // eslint-disable-line
-        },
+        }
       );
     } else {
       console.log(`ERROR: ${error}`);
