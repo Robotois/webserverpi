@@ -46,7 +46,7 @@ async.series(
         [
           // Turn RPI into an access point
           function enableAP(done) {
-            hostapd.enable(config.accessPoint, (err) => {
+            hostapd.enable(config.accessPoint, function apError(err) {
               console.log(err || 'AP created'); // eslint-disable-line
               done(err);
             });
@@ -55,11 +55,11 @@ async.series(
           function startServer() {
             require('./accessPoint.js')(); // eslint-disable-line
           },
-        ], function serverError(error) {
-        console.log(`ERROR: ${  error}`); // eslint-disable-line
+        ], function serverError(error1) {
+        console.log(`ERROR: ${  error1}`); // eslint-disable-line
       });
     } else {
       console.log(`ERROR: ${error}`);
     }
-  },
+  }
 );
