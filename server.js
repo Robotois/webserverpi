@@ -39,7 +39,7 @@ async.series(
       require('./index.js')(done); // eslint-disable-line
     },
   ],
-  (error) => {
+  function mainError(error) {
     if (error === true) {
       // we need to set up the AP
       async.series(
@@ -55,7 +55,7 @@ async.series(
           function startServer() {
             require('./accessPoint.js')(); // eslint-disable-line
           },
-        ], function e(error) {
+        ], function serverError(error) {
         console.log(`ERROR: ${  error}`); // eslint-disable-line
       });
     } else {
