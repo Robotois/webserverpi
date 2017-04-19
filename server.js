@@ -35,10 +35,12 @@ async.series(
     // 2. Check if we need to configure for first time
     function checkIfKitIsReady(done) {
       const hostname = os.hostname();
+      console.log(hostname);
       if (hostname.indexOf('robotois') === -1) {
         return setHostName('robotoisconfig', done);
       }
       if (hostname === 'robotoisconfig') {
+        console.log('crear ap');
         return done(true);
       }
       return done();
