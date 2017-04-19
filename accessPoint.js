@@ -6,6 +6,7 @@ const config = require('./config.json');
 const iwlist = require('wireless-tools/iwlist');
 const setup = require('setup')();
 const wpaSupplicant = require('wireless-tools/wpa_supplicant');
+const setHostName = require('./lib/hostname');
 
 module.exports = function App() {
   const app = koa();
@@ -46,7 +47,7 @@ module.exports = function App() {
         if (err) {
           reject(err);
         } else {
-          setup.hostname.save('robotois02');
+          setHostName(data.hostname || 'robotois01', resolve);
           // we need to reboot to set new host name;
           resolve();
         }

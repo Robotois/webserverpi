@@ -1,22 +1,10 @@
 const hostapd = require('wireless-tools/hostapd');
-const dependencyManager = require('./lib/dependencyManager')();
 const async = require('async');
 const os = require('os');
-const fs = require('fs');
-const exec = require('child_process').exec;
 
-// const setup = require('setup')();
-
+const dependencyManager = require('./lib/dependencyManager')();
+const setHostName = require('./lib/hostname');
 const config = require('./config.json');
-
-const setHostName = function setHostName(hostname, cb) {
-  fs.writeFile('/etc/hostname', hostname, () => {
-    exec('reboot', () => {
-      console.log('Reinicando el kit ... '); // eslint-disable-line
-      cb();
-    });
-  });
-};
 
 async.series(
   [

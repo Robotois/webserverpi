@@ -20,7 +20,7 @@ module.exports = function App() {
  * @returns {HTML} returns html body.
  */
   function* home() {
-    this.body = 'Hello World';
+    this.body = 'Soy el kit Robotois';
   }
   /**
  * Renders the home layout
