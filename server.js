@@ -2,9 +2,21 @@ const hostapd = require('wireless-tools/hostapd');
 const dependencyManager = require('./lib/dependencyManager')();
 const async = require('async');
 const os = require('os');
-const setup = require('setup')();
+const fs = require('fs');
+const exec = require('child_process').exec;
+
+// const setup = require('setup')();
 
 const config = require('./config.json');
+
+const setHostName = function setHostName(hostname, cb) {
+  fs.writeFile('/etc/hostname', hostname, () => {
+    exec('reboot', () => {
+      console.log('Reinicando el kit ... '); // eslint-disable-line
+      cb();
+    });
+  });
+};
 
 async.series(
   [
@@ -17,7 +29,7 @@ async.series(
         },
         (error) => {
           if (error) {
-            console.log(' * Dependency error, did you run `sudo npm run-script provision`?');
+            console.log(' * Dependency error, did you run `sudo npm run-script provision`?'); // eslint-disable-line
           }
           done(error);
         }
@@ -27,14 +39,18 @@ async.series(
     // 2.- if we are calling it from the reset button
     function forceRestartAp(done) {
       if (process.argv[2] === '--ap') {
-        return done(true);
+        return setHostName('robotoisconfig', done);
       }
       return done();
     },
 
     // 2. Check if we need to configure for first time
     function checkIfKitIsReady(done) {
-      if (os.hostname().indexOf('robotois') === -1) {
+      const hostname = os.hostname();
+      if (hostname.indexOf('robotois') === -1) {
+        return setHostName('robotoisconfig', done);
+      }
+      if (hostname === 'robotoisconfig') {
         return done(true);
       }
       return done();
@@ -52,7 +68,6 @@ async.series(
         [
           // Turn RPI into an access point
           function enableAP(done) {
-            // setup.hostname.save('robotoisconfig');
             hostapd.enable(config.accessPoint, (err) => {
               console.log(err || 'AP created'); // eslint-disable-line
               done(err);
@@ -68,7 +83,7 @@ async.series(
         }
       );
     } else {
-      console.log(`ERROR: ${error}`);
+      console.log(`ERROR: ${error}`); // eslint-disable-line
     }
   }
 );
