@@ -6,7 +6,7 @@
       "driver": "nl80211",
       "hw_mode": "g",
       "interface": "wlan0",
-      "ssid": "ROBOTOIS-KIT88",
+      "ssid": "KIT-ROBOTOIS",
       "wpa_passphrase": "robotois"
     },
     "server": {

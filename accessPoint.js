@@ -4,7 +4,6 @@ const parse = require('co-body');
 const koa = require('koa');
 const config = require('./config.json');
 const iwlist = require('wireless-tools/iwlist');
-const setup = require('setup')();
 const wpaSupplicant = require('wireless-tools/wpa_supplicant');
 const setHostName = require('./lib/hostname');
 
@@ -39,7 +38,8 @@ module.exports = function App() {
       interface: 'wlan0',
       ssid: data.ssid,
       passphrase: data.passcode,
-      driver: 'nl80211'
+      driver: 'nl80211',
+      hostname: data.hostname
     };
 
     this.body = yield new Promise((resolve, reject) => {
@@ -47,6 +47,7 @@ module.exports = function App() {
         if (err) {
           reject(err);
         } else {
+          console.log(err);
           setHostName(data.hostname || 'robotois01', resolve);
           // we need to reboot to set new host name;
           resolve();
