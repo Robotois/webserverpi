@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "provision": "apt-get update -y && apt-get install isc-dhcp-server hostapd iw -y",
+    "provision": "apt-get update -y && apt-get install isc-dhcp-server hostapd iw -y"
   },
   "keywords": [
     "robotois",
