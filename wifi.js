@@ -7,6 +7,7 @@ const settings = {
 };
 
 WiFiControl.configure(settings);
+WiFiControl.init({ debug: true });
 WiFiControl.connectToAP(
   {
     ssid: 'ARRIS-3882',
