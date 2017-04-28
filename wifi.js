@@ -10,7 +10,7 @@ WiFiControl.configure(settings);
 WiFiControl.connectToAP(
   {
     ssid: 'ARRIS-3882',
-    passphrase: '12344566456'
+    passphrase: '11A10DA43FCEBC11'
   },
   (err, response) => {
     if (err) {
