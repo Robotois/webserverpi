@@ -1,5 +1,12 @@
 const WiFiControl = require('wifi-control');
 
+const settings = {
+  debug: true,
+  iface: 'wlan0',
+  connectionTimeout: 10000 // in ms
+};
+
+WiFiControl.configure(settings);
 WiFiControl.connectToAP(
   {
     ssid: 'ARRIS-3882',
