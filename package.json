@@ -32,6 +32,7 @@
     "robotois-temperature-sensor": "^1.0.0",
     "socket.io": "^1.7.3",
     "underscore": "^1.8.3",
+    "wifi-control": "^2.0.1",
     "wireless-tools": "^0.19.0"
   },
   "devDependencies": {
