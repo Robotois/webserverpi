@@ -9,7 +9,7 @@ const WiFiControl = require('node-wifi');
 
 WiFiControl.configure(settings);*/
 WiFiControl.init({ iface: 'wlan0' });
-WiFiControl.connectToAP(
+WiFiControl.connect(
   {
     ssid: 'ARRIS-3882',
     passphrase: '11A10DA43FCEBC11'
