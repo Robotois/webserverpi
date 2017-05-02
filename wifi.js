@@ -6,6 +6,8 @@ const exitIfReady = function exitIfReady() {
   exec('hostname -I', (err2, output) => {
     if (output.trimRight()) {
       // Exit as soon as this succeeds
+      console.log(output);
+      console.log(output.trimRight());
       process.exit(0);
     }
   });
@@ -14,7 +16,7 @@ const exitIfReady = function exitIfReady() {
 const options = {
   interface: 'wlan0',
   ssid: 'ARRIS-3882',
-  passphrase: '11A10DA43FCEBC11',
+  passphrase: '11A10DA43FCEBC1188',
   driver: 'nl80211'
 };
 
