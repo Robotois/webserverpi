@@ -16,7 +16,7 @@ const exitIfReady = function exitIfReady() {
 const options = {
   interface: 'wlan0',
   ssid: 'ARRIS-3882',
-  passphrase: '11A10DA43FCEBC1188',
+  passphrase: '11A10DA43FCEBC1188 ',
   driver: 'nl80211'
 };
 
@@ -24,7 +24,7 @@ wpaSupplicant.enable(options, (error) => {
   if (error) {
     console.log(error);
   } else {
-    exec('ifdown wlan0 && sleep 1 && ifup wlan0', (err, response) => {
+    exec('ifdown wlan0 && sleep 1 && ifup wlan0', (err) => {
       if (err) {
         console.error(err);
         process.exit(1);
