@@ -32,12 +32,12 @@ module.exports = function App() {
     if (!data.code) {
       this.body = {
         success: false,
-        message: 'No code was provided',
+        message: 'No code was provided'
       };
       return this.body;
     }
     env = {
-      data: JSON.stringify(data),
+      data: JSON.stringify(data)
     };
 
     runner = spawn('node', ['codeRunner.js'], { env });
@@ -63,7 +63,7 @@ module.exports = function App() {
 
     this.body = {
       success: true,
-      message: 'exito!',
+      message: 'exito!'
     };
     return this.body;
   }
@@ -75,7 +75,7 @@ module.exports = function App() {
     runner.kill();
     this.body = {
       success: true,
-      message: 'exito!',
+      message: 'exito!'
     };
   }
 
