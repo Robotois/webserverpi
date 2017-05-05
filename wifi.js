@@ -40,6 +40,8 @@ const networkString = `${'network={\n' +
   }\n` +
   '}\n';
 
+console.log(templateConf);
+console.log(networkString);
 fs.writeFileSync(SUPPLICANT_PATH, templateConf + networkString);
 
 console.log('Restarting network connection');
