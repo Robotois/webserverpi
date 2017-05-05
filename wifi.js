@@ -23,6 +23,7 @@ const options = {
 };
 
 wpaSupplicant.enable(options, (error) => {
+  console.log(arguments);
   if (error) {
     console.log(error);
   } else {
