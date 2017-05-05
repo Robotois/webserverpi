@@ -5,6 +5,7 @@ const MAX_WAIT_TIME = 20000;
 const exitIfReady = function exitIfReady() {
   let newIP;
   exec('hostname -I', (err2, output) => {
+    console.log(output);
     newIP = output.trimRight();
     newIP = newIP.split(' ');
     if (newIP.length > 1) {
