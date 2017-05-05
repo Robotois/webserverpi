@@ -1,5 +1,8 @@
-const wpaSupplicant = require('wireless-tools/wpa_supplicant');
 const exec = require('child_process').exec;
+const fs = require('fs');
+const path = require('path');
+
+const SUPPLICANT_PATH = path.join('/etc', 'wpa_supplicant', 'wpa_supplicant.conf');
 
 const MAX_WAIT_TIME = 20000;
 const exitIfReady = function exitIfReady() {
@@ -15,6 +18,10 @@ const exitIfReady = function exitIfReady() {
   });
 };
 
+function getHeadOfConf(filePath) {
+  return fs.readFileSync(filePath).toString().replace(/network(.|\n)*$/, '');
+}
+
 const options = {
   interface: 'wlan0',
   ssid: 'ARRIS-3882',
@@ -22,34 +29,41 @@ const options = {
   driver: 'nl80211'
 };
 
-wpaSupplicant.enable(options, (error) => {
-  console.log(arguments);
-  if (error) {
-    console.log(error);
-  } else {
-    exec('ifdown wlan0 && sleep 1 && ifup wlan0', (err) => {
-      if (err) {
-        console.error(err);
-        process.exit(1);
-      } else {
-        // Every 2 seconds, check to see if it succeeded
-        for (let k = 2000; k < MAX_WAIT_TIME; k += 2000) {
-          setTimeout(
-            () => {
-              exitIfReady();
-            },
-            k
-          );
-        }
+const templateConf = getHeadOfConf(SUPPLICANT_PATH);
 
-        setTimeout(
-          () => {
-            console.error('Unable to get an IP address');
-            process.exit(1);
-          },
-          MAX_WAIT_TIME
-        );
-      }
-    });
+const networkString = `${'network={\n' +
+  '\tssid='}${
+  options.ssid
+  }\n` +
+  `\tpsk=${
+  options.passphrase
+  }\n` +
+  '}\n';
+
+fs.writeFileSync(SUPPLICANT_PATH, templateConf + networkString);
+
+console.log('Restarting network connection');
+exec('ifdown wlan0 && sleep 1 && ifup wlan0', (err) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  } else {
+    // Every 2 seconds, check to see if it succeeded
+    for (let k = 2000; k < MAX_WAIT_TIME; k += 2000) {
+      setTimeout(
+        () => {
+          exitIfReady();
+        },
+        k
+      );
+    }
+
+    setTimeout(
+      () => {
+        console.error('Unable to get an IP address');
+        process.exit(1);
+      },
+      MAX_WAIT_TIME
+    );
   }
 });
