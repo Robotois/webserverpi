@@ -3,11 +3,12 @@ const exec = require('child_process').exec;
 
 const MAX_WAIT_TIME = 20000;
 const exitIfReady = function exitIfReady() {
+  let newIP;
   exec('hostname -I', (err2, output) => {
-    if (output.trimRight()) {
-      // Exit as soon as this succeeds
-      console.log(output);
-      console.log(output.trimRight());
+    newIP = output.trimRight();
+    newIP = newIP.split(' ');
+    if (newIP.length > 1) {
+      console.log('wifi ready!!!!!');
       process.exit(0);
     }
   });
