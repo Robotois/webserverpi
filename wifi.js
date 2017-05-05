@@ -30,15 +30,11 @@ const options = {
 };
 
 const templateConf = getHeadOfConf(SUPPLICANT_PATH);
-
-const networkString = `${'network={\n' +
-  '\tssid='}${
-  options.ssid
-  }\n` +
-  `\tpsk=${
-  options.passphrase
-  }\n` +
-  '}\n';
+// templateConf = `ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\nupdate_config=1`;
+const networkString = `network={\n
+    \tssid="${options.ssid}"\n
+    \tpsk="${options.passphrase}\n"
+  }\n`;
 
 console.log(templateConf);
 console.log(networkString);
