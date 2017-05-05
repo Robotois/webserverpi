@@ -25,7 +25,7 @@ function getHeadOfConf(filePath) {
 const options = {
   interface: 'wlan0',
   ssid: 'ARRIS-3882',
-  passphrase: '11A10DA43FCEBC11',
+  passphrase: '11A10DA43FCEBC1188',
   driver: 'nl80211'
 };
 
