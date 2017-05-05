@@ -19,8 +19,7 @@ const options = {
   interface: 'wlan0',
   ssid: 'ARRIS-3882',
   passphrase: '11A10DA43FCEBC11',
-  // driver: 'nl80211'
-  drivers: ['nl80211', 'wext']
+  driver: 'nl80211'
 };
 
 wpaSupplicant.enable(options, (error) => {
