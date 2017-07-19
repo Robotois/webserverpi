@@ -4,7 +4,8 @@ const parse = require('co-body');
 const koa = require('koa');
 
 const app = koa();
-const spawn = require('child_process').spawn;
+// const spawn = require('child_process').spawn;
+const cp = require('child_process');
 const io = require('socket.io')();
 
 let runner;
@@ -26,7 +27,7 @@ function* home() {
  */
 function* post() {
   const data = yield parse(this);
-  console.log(data);
+  // console.log(data);
   if (!data.code) {
     this.body = {
       success: false,
@@ -38,7 +39,8 @@ function* post() {
     data: JSON.stringify(data),
   };
 
-  runner = spawn('node', ['codeRunner.js'], { env });
+  // runner = cp.spawn('node', ['codeRunner.js'], { env });
+  runner = cp.fork(`${__dirname}/codeRunner.js`, [], { env, silent: true });
   runner.stdout.on('data', (stdout) => {
     if (stdout.indexOf('Released') === -1) {
       io.emit('data', stdout.toString());
@@ -89,3 +91,24 @@ io.on('connection', () => {
   console.log('socket IO listening on port 8888');
 });
 io.listen(8888);
+
+
+// const data = yield parse(this);
+// // console.log(data);
+// if (!data.code) {
+//   this.body = {
+//     success: false,
+//     message: 'No code was provided',
+//   };
+//   return this.body;
+// }
+// env = {
+//   data: JSON.stringify(data),
+// };
+// const n = cp.fork(`${__dirname}/codeRunnerTest.js`, [], { env });
+//
+// n.on('message', (m) => {
+//   console.log('PARENT got message:', m);
+// });
+//
+// n.send({ hello: 'world' });

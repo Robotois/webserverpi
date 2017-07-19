@@ -4,7 +4,7 @@ const Light = require('robotois-light-sensor');
 const Led = require('robotois-led');
 const Temperature = require('robotois-temperature-sensor');
 const LCD = require('robotois-lcd-display');
-const Rotatory = require('robotois-rotatory-sensor');
+const Rotary = require('robotois-rotary-sensor');
 const Button = require('robotois-button');
 const Line = require('robotois-line-sensor');
 const Motors = require('robotois-motors');
@@ -18,7 +18,7 @@ let light,
   led,
   temperature,
   lcd,
-  rotatory,
+  rotary,
   distance,
   button,
   ledRGB,
@@ -31,6 +31,7 @@ const modules = data.modules;
 // light sensor
 if (modules.light && modules.light.port) {
   light = new Light(modules.light.port);
+  light.enableEvents();
 }
 // led
 if (modules.led && modules.led.port) {
@@ -39,14 +40,16 @@ if (modules.led && modules.led.port) {
 // temperature
 if (modules.temperature && modules.temperature.port) {
   temperature = new Temperature(modules.temperature.port);
+  temperature.enableEvents();
 }
 // lcd
 if (modules.lcd && modules.lcd.port) {
   lcd = new LCD();
 }
-// rotatory
-if (modules.rotatory && modules.rotatory.port) {
-  rotatory = new Rotatory(modules.rotatory.port);
+// rotary
+if (modules.rotary && modules.rotary.port) {
+  rotary = new Rotary(modules.rotary.port);
+  rotary.enableEvents();
 }
 // distance
 if (modules.distance && modules.distance.port) {
@@ -70,8 +73,8 @@ if (modules.motor && modules.motor.port) {
 }
 /* eslint-disable no-eval */
 eval(data.code);
-
-setInterval(() => {}, 10000);
+// eval('console.log("Hello from child")')
+// setInterval(() => {}, 10000);
 
 /**
  * Releases all components resources
@@ -96,9 +99,9 @@ function exitHandler() {
   if (modules.lcd && modules.lcd.port) {
     lcd.release();
   }
-  // rotatory
-  if (modules.rotatory && modules.rotatory.port) {
-    rotatory.release();
+  // rotary
+  if (modules.rotary && modules.rotary.port) {
+    rotary.release();
   }
   // distance
   if (modules.distance && modules.distance.port) {
