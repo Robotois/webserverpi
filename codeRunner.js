@@ -11,6 +11,8 @@ const Motors = require('robotois-motors');
 const Distance = require('robotois-distance-sensor');
 const LedRGB = require('robotois-rgb-leds');
 const Servos = require('robotois-servos');
+const Motion = require('robotois-motion-sensor');
+const Relay = require('robotois-relay');
 /* eslint-enable*/
 
 /* eslint-disable one-var */
@@ -21,6 +23,8 @@ let light,
   rotary,
   distance,
   button,
+  motion,
+  relay,
   ledRGB,
   motor,
   servo;
@@ -36,6 +40,10 @@ if (modules.light && modules.light.port) {
 // led
 if (modules.led && modules.led.port) {
   led = new Led(modules.led.port);
+}
+// relay
+if (modules.relay && modules.relay.port) {
+  relay = new Relay(modules.relay.port);
 }
 // temperature
 if (modules.temperature && modules.temperature.port) {
@@ -58,6 +66,12 @@ if (modules.distance && modules.distance.port) {
 // button
 if (modules.button && modules.button.port) {
   button = new Button(modules.button.port);
+  button.enableEvents();
+}
+// motion
+if (modules.motion && modules.motion.port) {
+  motion = new Motion(modules.motion.port);
+  motion.enableEvents();
 }
 // ledRGB
 if (modules.ledRGB && modules.ledRGB.port) {
@@ -123,9 +137,17 @@ function exitHandler() {
   if (modules.motor && modules.motor.port) {
     motor.release();
   }
+  // motion
+  if (modules.motion) {
+    motion.release();
+  }
+  // relay
+  if (modules.relay) {
+    relay.release();
+  }
   process.exit();
 }
 
 process.on('SIGTERM', exitHandler);
 process.on('SIGINT', exitHandler);
-process.on('exit', exitHandler);
+// process.on('exit', exitHandler);

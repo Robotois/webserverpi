@@ -42,12 +42,14 @@ function* post() {
   // runner = cp.spawn('node', ['codeRunner.js'], { env });
   runner = cp.fork(`${__dirname}/codeRunner.js`, [], { env, silent: true });
   runner.stdout.on('data', (stdout) => {
+    console.log(stdout);
     if (stdout.indexOf('Released') === -1) {
       io.emit('data', stdout.toString());
     }
   });
 
   runner.stderr.on('data', (stderr) => {
+    console.log(stderr);
     io.emit('stderr', stderr.toString());
   });
 
@@ -58,7 +60,7 @@ function* post() {
 
   // killl exec whe process ends
   process.on('exit', () => {
-    runner.kill();
+    runner.kill('SIGTERM');
   });
 
   this.body = {
@@ -72,7 +74,7 @@ function* post() {
  * @returns {JSON} returns JSON.
  */
 function* reset() {
-  runner.kill();
+  runner.kill('SIGTERM');
   this.body = {
     success: true,
     message: 'exito!',
