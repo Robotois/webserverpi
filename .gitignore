@@ -1,4 +1,7 @@
-node_modules/
+# dependencies
+node_modules
+#tests/practicas/node_modules
+build
 
 # misc
 .DS_Store
