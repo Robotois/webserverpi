@@ -1,6 +1,7 @@
 // robotios requires
 /* eslint-disable*/
 const Light = require('robotois-light-sensor');
+const Sound = require('robotois-sound-sensor');
 const Led = require('robotois-led');
 const Temperature = require('robotois-temperature-sensor');
 const LCD = require('robotois-lcd-display');
@@ -19,6 +20,7 @@ const Relay = require('robotois-relay');
 let light,
   led,
   temperature,
+  sound,
   lcd,
   rotary,
   distance,
@@ -50,6 +52,11 @@ if (modules.temperature && modules.temperature.port) {
   temperature = new Temperature(modules.temperature.port);
   temperature.enableEvents();
 }
+// sound
+if (modules.sound && modules.sound.port) {
+  sound = new Sound(modules.sound.port);
+  sound.enableEvents();
+}
 // lcd
 if (modules.lcd && modules.lcd.port) {
   lcd = new LCD();
@@ -62,6 +69,7 @@ if (modules.rotary && modules.rotary.port) {
 // distance
 if (modules.distance && modules.distance.port) {
   distance = new Distance(modules.distance.port);
+  distance.enableEvents();
 }
 // button
 if (modules.button && modules.button.port) {
