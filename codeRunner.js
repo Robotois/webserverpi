@@ -8,95 +8,126 @@ const LCD = require('robotois-lcd-display');
 const Rotary = require('robotois-rotary-sensor');
 const Button = require('robotois-button');
 const Line = require('robotois-line-sensor');
-const Motors = require('robotois-motors');
+const MotorController = require('robotois-motor-controller');
 const Distance = require('robotois-distance-sensor');
 const LedRGB = require('robotois-rgb-leds');
-const Servos = require('robotois-servos');
+const ServoController = require('robotois-servos');
 const Motion = require('robotois-motion-sensor');
 const Relay = require('robotois-relay');
 /* eslint-enable*/
 
 /* eslint-disable one-var */
-let light,
-  led,
-  temperature,
-  sound,
-  lcd,
-  rotary,
-  distance,
-  button,
-  motion,
-  relay,
-  ledRGB,
-  motor,
-  servo;
+const light = [],
+  led = [],
+  temperature = [],
+  sound = [],
+  lcd = [],
+  rotary = [],
+  distance = [],
+  button = [],
+  motion = [],
+  relay = [],
+  ledRGB = [],
+  motorControllers = [],
+  motor = [],
+  servoControllers = [],
+  servo = [];
 // get data from params
-const data = JSON.parse(process.env.data);
-const modules = data.modules;
 
-// light sensor
-if (modules.light && modules.light.port) {
-  light = new Light(modules.light.port);
-  light.enableEvents();
-}
-// led
-if (modules.led && modules.led.port) {
-  led = new Led(modules.led.port);
-}
-// relay
-if (modules.relay && modules.relay.port) {
-  relay = new Relay(modules.relay.port);
-}
-// temperature
-if (modules.temperature && modules.temperature.port) {
-  temperature = new Temperature(modules.temperature.port);
-  temperature.enableEvents();
-}
-// sound
-if (modules.sound && modules.sound.port) {
-  sound = new Sound(modules.sound.port);
-  sound.enableEvents();
-}
-// lcd
-if (modules.lcd && modules.lcd.port) {
-  lcd = new LCD();
-}
-// rotary
-if (modules.rotary && modules.rotary.port) {
-  rotary = new Rotary(modules.rotary.port);
-  rotary.enableEvents();
-}
-// distance
-if (modules.distance && modules.distance.port) {
-  distance = new Distance(modules.distance.port);
-  distance.enableEvents();
-}
-// button
-if (modules.button && modules.button.port) {
-  button = new Button(modules.button.port);
-  button.enableEvents();
-}
-// motion
-if (modules.motion && modules.motion.port) {
-  motion = new Motion(modules.motion.port);
-  motion.enableEvents();
-}
-// ledRGB
-if (modules.ledRGB && modules.ledRGB.port) {
-  ledRGB = new LedRGB();
-}
-// ledRGB
-if (modules.servo && modules.servo.port) {
-  servo = new Servos(0);
-}
-// ledRGB
-if (modules.motor && modules.motor.port) {
-  motor = new Motors();
-}
-/* eslint-disable no-eval */
+const getController = (Controller, instance, controllers) => {
+  // console.log('instance: ', instance);
+  const exists = controllers.find(cont => cont.instance === instance);
+  if (!exists) {
+    const newController = {
+      instance,
+      controller: new Controller(instance),
+    };
+    controllers.push(newController);
+    return newController.controller;
+  }
+  return exists.controller;
+};
+
+const data = JSON.parse(process.env.data);
+
+const connections = data.connections;
+connections.sort((a, b) => a.instance - b.instance);
+connections.forEach((toi) => {
+  let toiItem;
+  let controller;
+  switch (toi.type) {
+    case 'sound':
+      toiItem = new Sound(toi.parent.port, toi.parent.instance - 1);
+      toiItem.enableEvents();
+      sound.push(toiItem);
+      break;
+    case 'rotary':
+      toiItem = new Rotary(toi.parent.port, toi.parent.instance - 1);
+      toiItem.enableEvents();
+      rotary.push(toiItem);
+      break;
+    case 'light':
+      toiItem = new Light(toi.parent.port, toi.parent.instance - 1);
+      toiItem.enableEvents();
+      light.push(toiItem);
+      break;
+    case 'temperature':
+      toiItem = new Temperature(toi.parent.port, toi.parent.instance - 1);
+      toiItem.enableEvents();
+      temperature.push(toiItem);
+      break;
+    case 'led':
+      led.push(new Led(toi.parent.port));
+      break;
+    case 'relay':
+      relay.push(new Relay(toi.parent.port));
+      break;
+    case 'lcd':
+      lcd.push(new LCD(toi.instance - 1)); // Traducing instance to I2C address
+      break;
+    case 'distance':
+      toiItem = new Distance(toi.parent.port);
+      toiItem.enableEvents();
+      distance.push(toiItem);
+      break;
+    case 'button':
+      toiItem = new Button(toi.parent.port);
+      toiItem.enableEvents();
+      button.push(toiItem);
+      break;
+    case 'motion':
+      toiItem = new Motion(toi.parent.port);
+      toiItem.enableEvents();
+      button.push(toiItem);
+      break;
+    case 'ledRGB':
+      ledRGB.push(new LedRGB(toi.instance - 1)); // Traducing instance to I2C address
+      break;
+    case 'servo':
+      // Traducing instance to I2C address
+      controller = getController(ServoController, toi.parent.instance - 1, servoControllers);
+      toiItem = controller.createServo(toi.parent.port);
+      servo.push(toiItem);
+      break;
+    case 'motor':
+      // Traducing instance to I2C address
+      controller = getController(MotorController, toi.parent.instance - 1, motorControllers);
+      toiItem = controller.createMotor(toi.parent.port);
+      motor.push(toiItem);
+      break;
+    default:
+  }
+});
+
 eval(data.code);
+
+/* eslint-disable no-eval */
 // eval('console.log("Hello from child")')
 // setInterval(() => {}, 10000);
+
+const releaser = (toiVect) => {
+  toiVect.forEach(toi => toi.release());
+};
 
 /**
  * Releases all components resources
@@ -105,54 +136,19 @@ eval(data.code);
  * @returns {int} .
  */
 function exitHandler() {
-  // light sensor
-  if (modules.light && modules.light.port) {
-    light.release();
-  }
-  // led
-  if (modules.led && modules.led.port) {
-    led.release();
-  }
-  // temperature
-  if (modules.temperature && modules.temperature.port) {
-    temperature.release();
-  }
-  // lcd
-  if (modules.lcd && modules.lcd.port) {
-    lcd.release();
-  }
-  // rotary
-  if (modules.rotary && modules.rotary.port) {
-    rotary.release();
-  }
-  // distance
-  if (modules.distance && modules.distance.port) {
-    distance.release();
-  }
-  // button
-  if (modules.button && modules.button.port) {
-    button.release();
-  }
-  // ledRGB
-  if (modules.ledRGB && modules.ledRGB.port) {
-    ledRGB.release();
-  }
-  // servos
-  if (modules.servo && modules.servo.port) {
-    servo.release();
-  }
-  // motors
-  if (modules.motor && modules.motor.port) {
-    motor.release();
-  }
-  // motion
-  if (modules.motion) {
-    motion.release();
-  }
-  // relay
-  if (modules.relay) {
-    relay.release();
-  }
+  releaser(light);
+  releaser(sound);
+  releaser(temperature);
+  releaser(rotary);
+  releaser(led);
+  releaser(lcd);
+  releaser(relay);
+  releaser(distance);
+  releaser(button);
+  releaser(motion);
+  releaser(ledRGB);
+  releaser(servoControllers);
+  releaser(motorControllers);
   process.exit();
 }
 
