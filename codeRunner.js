@@ -11,7 +11,7 @@ const Line = require('robotois-line-sensor');
 const MotorController = require('robotois-motor-controller');
 const Distance = require('robotois-distance-sensor');
 const LedRGB = require('robotois-rgb-leds');
-const ServoController = require('robotois-servos');
+const ServoController = require('robotois-servo-controller');
 const Motion = require('robotois-motion-sensor');
 const Relay = require('robotois-relay');
 /* eslint-enable*/

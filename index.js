@@ -95,46 +95,49 @@ io.on('connection', () => {
 io.listen(8888);
 
 
-const mosca = require('mosca');
-const redis = require('redis');
+// const mosca = require('mosca');
+// const redis = require('redis');
+//
+// const ascoltatore = {
+//   type: 'redis',
+//   redis,
+//   db: 12,
+//   port: 6379,
+//   return_buffers: true, // to handle binary payloads
+//   host: 'localhost',
+// };
+//
+// const moscaSettings = {
+//   port: 1883,
+//   http: {
+//     port: 1884,
+//     bundle: true,
+//     static: './',
+//   },
+//   backend: ascoltatore,
+//   persistence: {
+//     factory: mosca.persistence.Redis,
+//   },
+// };
+//
+// const setup = () => {
+//   console.log('Mosca server is up and running');
+// };
+//
+// const server = new mosca.Server(moscaSettings);
+// server.on('ready', setup);
+//
+// server.on('clientConnected', (client) => {
+//   console.log('client connected', client.id);
+// });
+//
+// // fired when a message is received
+// server.on('published', (packet, client) => {
+//   console.log('Published', packet.topic, packet.payload);
+// });
 
-const ascoltatore = {
-  type: 'redis',
-  redis,
-  db: 12,
-  port: 6379,
-  return_buffers: true, // to handle binary payloads
-  host: 'localhost',
-};
 
-const moscaSettings = {
-  port: 1883,
-  http: {
-    port: 1884,
-    bundle: true,
-    static: './',
-  },
-  backend: ascoltatore,
-  persistence: {
-    factory: mosca.persistence.Redis,
-  },
-};
 
-const setup = () => {
-  console.log('Mosca server is up and running');
-};
-
-const server = new mosca.Server(moscaSettings);
-server.on('ready', setup);
-
-server.on('clientConnected', (client) => {
-  console.log('client connected', client.id);
-});
-
-// fired when a message is received
-server.on('published', (packet, client) => {
-  console.log('Published', packet.topic, packet.payload);
-});
 
 // fired when the mqtt server is ready
 
