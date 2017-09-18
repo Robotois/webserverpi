@@ -4,7 +4,10 @@
   "description": "The webserver that is going to live inside the pi",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "sudo node index.js",
+    "build": "node_modules/.bin/webpack --config webpack.config.js",
+    "start-dev": "npm run build && npm run start"
   },
   "keywords": [
     "robotois",
@@ -13,10 +16,22 @@
   "author": "iam@armando.mx",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.16.2",
+    "babel-core": "^6.25.0",
+    "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.18.1",
+    "bulma": "^0.5.2",
     "co-body": "^4.2.0",
-    "koa": "^1.2.4",
-    "koa-logger": "^1.3.0",
-    "koa-route": "^2.4.2",
+    "express": "^4.15.4",
+    "koa": "^2.3.0",
+    "koa-logger": "^3.0.1",
+    "koa-mount": "^3.0.0",
+    "koa-route": "^3.2.0",
+    "koa-static": "^4.0.1",
+    "morgan": "^1.8.2",
+    "onoff": "^1.1.7",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "redis": "^2.8.0",
     "robotois-button": "git+https://github.com/Robotois/robotois-button.git",
     "robotois-distance-sensor": "git+https://github.com/Robotois/robotois-distance-sensor.git",
@@ -30,18 +45,32 @@
     "robotois-rgb-leds": "git+https://github.com/Robotois/robotois-rgb-leds.git",
     "robotois-rotary-sensor": "git+https://github.com/Robotois/robotois-rotary-sensor.git",
     "robotois-servo-controller": "git+https://github.com/Robotois/robotois-servo-controller.git",
-    "robotois-servos": "git+https://github.com/Robotois/robotois-servo-controller.git",
     "robotois-sound-sensor": "git+https://github.com/Robotois/robotois-sound-sensor.git",
     "robotois-temperature-sensor": "git+https://github.com/Robotois/robotois-temperature-sensor.git",
     "socket.io": "^1.7.3",
-    "supervisor": "^0.11.0"
+    "spectre.css": "^0.4.1",
+    "supervisor": "^0.11.0",
+    "wifi-config": "git+https://github.com/yovany-lg/wifi-config.git",
+    "wireless-tools": "^0.19.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
-    "eslint": "^3.16.1",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.0"
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.16",
+    "css-loader": "^0.28.7",
+    "eslint": "^4.4.1",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.2.0",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
+    "style-loader": "^0.18.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "webpack": "^3.5.6"
   }
 }
