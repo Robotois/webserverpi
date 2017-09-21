@@ -1,10 +1,16 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import wifiConfig from 'wifi-config';
+import os from 'os';
+import { connectWifi, startAP } from 'wifi-config';
 import iwlist from 'wireless-tools/iwlist';
 
-const wifis = wifiConfig.wifis;
 const router = express.Router();
+
+router.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -27,16 +33,27 @@ router.get('/all', (req, res) => {
 
 router.post('/connect', (req, res) => {
   // const { id } = req.params;
-  console.log(req.params);
+  const { ssid, pwd } = req.body;
+  console.log(req.body);
+  connectWifi(ssid, pwd);
   res.status(200).json({
-    good: 'good',
+    ok: true,
   });
-  // if (settings) {
-  // } else {
-  //   res.status(404).json({
-  //     message: `Unknown wifi with id: ${id}`,
-  //   });
-  // }
+});
+
+router.get('/hostname', (req, res) => {
+  const hostname = os.hostname();
+  res.status(200).json({
+    hostname,
+  });
+});
+
+router.get('/start-ap', (req, res) => {
+  startAP();
+  // const hostname = os.hostname();
+  res.status(200).json({
+    ok: 'ok',
+  });
 });
 
 module.exports = router;

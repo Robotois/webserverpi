@@ -1,6 +1,6 @@
 import path from 'path';
 import Express from 'express';
-// import logger from 'morgan';
+import logger from 'morgan';
 import io from 'socket.io';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -10,6 +10,7 @@ import AppContainer from '../ui/containers/AppContainer';
 import runnerRoutes from './routes/runner-routes';
 import wifiRoutes from './routes/wifi-routes';
 import resetButton from '../robotois-reset';
+import command from '../robotois-reset/commands';
 
 resetButton.init();
 
@@ -23,11 +24,20 @@ const home = (req, res) => {
   res.send(template(appBody));
 };
 
-// app.use(logger('tiny'));
+app.use(logger('tiny'));
 app.use('/static', Express.static(path.join(__dirname, '../ui/dist')));
 app.get('/', home);
+// app.get('/hostname', getHostname);
 app.use('/wifi', wifiRoutes);
 app.use('/runner', runnerRoutes);
+
+app.get('/shutdown', (req, res) => {
+  console.log('---> Robotois system going to shutdown...');
+  command('sudo shutdown -h now');
+  res.status(200).json({
+    ok: 'ok',
+  });
+});
 
 // listen
 app.listen(8082);
