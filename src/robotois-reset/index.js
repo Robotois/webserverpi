@@ -1,6 +1,6 @@
-import { Gpio } from 'onoff';
-import wifiConfig from 'wifi-config';
-import command from './commands';
+const { Gpio } = require('onoff');
+const wifiConfig = require('wifi-config');
+const command = require('./commands');
 
 const button = new Gpio(4, 'in', 'both');
 
@@ -13,12 +13,9 @@ const resetFunction = (seconds) => {
       console.log('---> Robotois system going to shutdown...');
       command('sudo shutdown -h now');
       break;
-    // case seconds < 5:
     default:
       console.log('---> Robotois enable Access Point...');
       wifiConfig.startAP();
-      // command('sudo shutdown -h now');
-      // break;
   }
 };
 

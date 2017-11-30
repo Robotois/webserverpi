@@ -1,9 +1,9 @@
-import Express from 'express';
-import logger from 'morgan';
-import runnerRoutes from './routes/runner-routes';
-import wifiRoutes from './routes/wifi-routes';
-import resetButton from '../robotois-reset';
-import command from '../robotois-reset/commands';
+const Express = require('express');
+const logger = require('morgan');
+const runnerRoutes = require('./routes/runner-routes');
+const wifiRoutes = require('./routes/wifi-routes');
+const resetButton = require('../robotois-reset');
+const command = require('../robotois-reset/commands');
 
 resetButton.init();
 

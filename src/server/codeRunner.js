@@ -71,7 +71,6 @@ const mqttClient = mqtt.connect({ host: mqttHost, port: 1883 });
 
 const subscriber = () => new Promise((resolve) => {
   mqttClient.on('connect', () => {
-    // mqttClient.subscribe('registerTopic');
     mqttClient.subscribe('requestTopic');
     resolve(true);
   });
@@ -79,9 +78,6 @@ const subscriber = () => new Promise((resolve) => {
 
 mqttClient.on('message', (topic, message) => {
   switch (topic) {
-    // case 'registerTopic':
-    //   registerTopic(message.toString());
-    //   break;
     case 'requestTopic':
       requestTopic(message.toString(), mqttClient);
       break;

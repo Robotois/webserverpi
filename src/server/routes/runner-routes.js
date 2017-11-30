@@ -1,6 +1,6 @@
-import Express from 'express';
-import bodyParser from 'body-parser';
-import cp from 'child_process';
+const Express = require('express');
+const bodyParser = require('body-parser');
+const cp = require('child_process');
 
 const router = Express.Router();
 

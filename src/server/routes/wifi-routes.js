@@ -1,15 +1,15 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import os from 'os';
-import { connectWifi, startAP } from 'wifi-config';
-import iwlist from 'wireless-tools/iwlist';
-import command from '../../robotois-reset/commands';
+const express = require('express');
+const bodyParser = require('body-parser');
+const os = require('os');
+const { connectWifi, startAP } = require('wifi-config');
+const iwlist = require('wireless-tools/iwlist');
+const command = require('../../robotois-reset/commands');
 
 const router = express.Router();
 
 router.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
@@ -42,7 +42,7 @@ router.post('/connect', (req, res) => {
   });
   setTimeout(() => {
     command('sudo shutdown -r now');
-  }, 1000);
+  }, 500);
 });
 
 router.get('/hostname', (req, res) => {
