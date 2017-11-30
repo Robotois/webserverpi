@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import os from 'os';
 import { connectWifi, startAP } from 'wifi-config';
 import iwlist from 'wireless-tools/iwlist';
+import command from '../../robotois-reset/commands';
 
 const router = express.Router();
 
@@ -39,6 +40,9 @@ router.post('/connect', (req, res) => {
   res.status(200).json({
     ok: true,
   });
+  setTimeout(() => {
+    command('sudo shutdown -r now');
+  }, 1000);
 });
 
 router.get('/hostname', (req, res) => {

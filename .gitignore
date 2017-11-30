@@ -2,6 +2,7 @@
 node_modules
 #tests/practicas/node_modules
 build
+core
 
 # misc
 .DS_Store

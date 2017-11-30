@@ -1,10 +1,11 @@
 // robotios requires
 /* eslint-disable*/
+const mqtt = require('mqtt');
 const Light = require('robotois-light-sensor');
 const Sound = require('robotois-sound-sensor');
 const Led = require('robotois-led');
 const Temperature = require('robotois-temperature-sensor');
-const LCD = require('robotois-lcd-display');
+const LCD = require('../../../robotois-lcd-display');
 const Rotary = require('robotois-rotary-sensor');
 const Button = require('robotois-button');
 const Line = require('robotois-line-sensor');
@@ -17,7 +18,8 @@ const Relay = require('robotois-relay');
 /* eslint-enable*/
 
 /* eslint-disable one-var */
-const light = [],
+const mqttTopics = [],
+  light = [],
   led = [],
   temperature = [],
   sound = [],
@@ -48,85 +50,238 @@ const getController = (Controller, instance, controllers) => {
   return exists.controller;
 };
 
-const data = JSON.parse(process.env.data);
+const allTopics = () => mqttTopics.reduce(
+  (result, el) => result.concat(`${el.topic};`),
+  '',
+);
 
-const connections = data.connections;
-connections.sort((a, b) => a.instance - b.instance);
-connections.forEach((toi) => {
-  let toiItem;
-  let controller;
-  switch (toi.type) {
-    case 'sound':
-      toiItem = new Sound(toi.parent.port, toi.parent.instance - 1);
-      toiItem.enableEvents();
-      sound.push(toiItem);
-      break;
-    case 'rotary':
-      toiItem = new Rotary(toi.parent.port, toi.parent.instance - 1);
-      toiItem.enableEvents();
-      rotary.push(toiItem);
-      break;
-    case 'light':
-      toiItem = new Light(toi.parent.port, toi.parent.instance - 1);
-      toiItem.enableEvents();
-      light.push(toiItem);
-      break;
-    case 'temperature':
-      toiItem = new Temperature(toi.parent.port, toi.parent.instance - 1);
-      toiItem.enableEvents();
-      temperature.push(toiItem);
-      break;
-    case 'led':
-      led.push(new Led(toi.parent.port));
-      break;
-    case 'relay':
-      relay.push(new Relay(toi.parent.port));
-      break;
-    case 'lcd':
-      lcd.push(new LCD(toi.instance - 1)); // Traducing instance to I2C address
-      break;
-    case 'distance':
-      toiItem = new Distance(toi.parent.port);
-      toiItem.enableEvents();
-      distance.push(toiItem);
-      break;
-    case 'button':
-      toiItem = new Button(toi.parent.port);
-      toiItem.enableEvents();
-      button.push(toiItem);
-      break;
-    case 'motion':
-      toiItem = new Motion(toi.parent.port);
-      toiItem.enableEvents();
-      button.push(toiItem);
-      break;
-    case 'ledRGB':
-      ledRGB.push(new LedRGB(toi.instance - 1)); // Traducing instance to I2C address
-      break;
-    case 'servo':
-      // Traducing instance to I2C address
-      controller = getController(ServoController, toi.parent.instance - 1, servoControllers);
-      toiItem = controller.createServo(toi.parent.port);
-      servo.push(toiItem);
-      break;
-    case 'motor':
-      // Traducing instance to I2C address
-      controller = getController(MotorController, toi.parent.instance - 1, motorControllers);
-      toiItem = controller.createMotor(toi.parent.port);
-      motor.push(toiItem);
+const requestTopic = (topic, client) => {
+  if (topic === 'all') {
+    client.publish('allTopics', allTopics());
+    return;
+  }
+  const topicElement = mqttTopics.find(el => el.topic === topic);
+  if (topicElement) {
+    topicElement.topicToi.publishNow();
+  }
+};
+
+const mqttHost = process.env.mqttHost;
+const mqttClient = mqtt.connect({ host: mqttHost, port: 1883 });
+
+const subscriber = () => new Promise((resolve) => {
+  mqttClient.on('connect', () => {
+    // mqttClient.subscribe('registerTopic');
+    mqttClient.subscribe('requestTopic');
+    resolve(true);
+  });
+});
+
+mqttClient.on('message', (topic, message) => {
+  switch (topic) {
+    // case 'registerTopic':
+    //   registerTopic(message.toString());
+    //   break;
+    case 'requestTopic':
+      requestTopic(message.toString(), mqttClient);
       break;
     default:
   }
 });
 
-eval(data.code);
+const createToiWithEvents = (ToiType, toiConfig) => {
+  const newToi = toiConfig.parentInstance ?
+    new ToiType(toiConfig.parentPort, toiConfig.parentInstance) :
+    new ToiType(toiConfig.parentPort);
+  newToi.enableEvents({
+    mqttClient,
+    instance: toiConfig.toiInstance,
+  });
+  mqttTopics.push({
+    topic: newToi.myTopic,
+    topicToi: newToi,
+  });
+  // console.log(newToi.myTopic);
+  return newToi;
+};
+
+const data = JSON.parse(process.env.data);
+const { connections } = data.connections;
+
+const runner = async () => {
+  await subscriber();
+  connections.sort((a, b) => a.instance - b.instance);
+  connections.forEach((toi) => {
+    let toiItem;
+    let controller;
+    switch (toi.type) {
+      case 'sound':
+        sound.push(createToiWithEvents(
+          Sound,
+          {
+            parentPort: toi.parent.port,
+            parentInstance: toi.parent.instance - 1,
+            toiInstance: toi.instance,
+          },
+        ));
+        break;
+      case 'rotary':
+        rotary.push(createToiWithEvents(
+          Rotary,
+          {
+            parentPort: toi.parent.port,
+            parentInstance: toi.parent.instance - 1,
+            toiInstance: toi.instance,
+          },
+        ));
+        break;
+      case 'light':
+        light.push(createToiWithEvents(Light,
+          {
+            parentPort: toi.parent.port,
+            parentInstance: toi.parent.instance - 1,
+            toiInstance: toi.instance,
+          },
+        ));
+        break;
+      case 'temperature':
+        temperature.push(createToiWithEvents(
+          Temperature,
+          {
+            parentPort: toi.parent.port,
+            parentInstance: toi.parent.instance - 1,
+            toiInstance: toi.instance,
+          },
+        ));
+        break;
+      case 'distance':
+        distance.push(createToiWithEvents(
+          Distance,
+          {
+            parentPort: toi.parent.port,
+            toiInstance: toi.instance,
+          },
+        ));
+        break;
+      case 'button':
+        button.push(createToiWithEvents(
+          Button,
+          {
+            parentPort: toi.parent.port,
+            toiInstance: toi.instance,
+          },
+        ));
+        break;
+      case 'motion':
+        motion.push(createToiWithEvents(
+          Motion,
+          {
+            parentPort: toi.parent.port,
+            toiInstance: toi.instance,
+          },
+        ));
+        break;
+      case 'led':
+        toiItem = new Led(toi.parent.port);
+        toiItem.setMqttClient({
+          mqttClient,
+          instance: toi.instance,
+        });
+        mqttTopics.push({
+          topic: toiItem.myTopic,
+          topicToi: toiItem,
+        });
+        led.push(toiItem);
+        break;
+      case 'relay':
+        toiItem = new Relay(toi.parent.port);
+        toiItem.setMqttClient({
+          mqttClient,
+          instance: toi.instance,
+        });
+        mqttTopics.push({
+          topic: toiItem.myTopic,
+          topicToi: toiItem,
+        });
+        relay.push(toiItem);
+        break;
+      case 'lcd':
+        toiItem = new LCD(toi.instance - 1);
+        toiItem.setMqttClient({
+          mqttClient,
+          instance: toi.instance,
+        });
+        mqttTopics.push({
+          topic: toiItem.myTopic,
+          topicToi: toiItem,
+        });
+        lcd.push(toiItem); // Traducing instance to I2C address
+        break;
+      case 'ledRGB':
+        toiItem = new LedRGB(toi.instance - 1);
+        toiItem.setMqttClient({
+          mqttClient,
+          instance: toi.instance,
+        });
+        mqttTopics.push({
+          topic: toiItem.myTopic,
+          topicToi: toiItem,
+        });
+        ledRGB.push(toiItem); // Traducing instance to I2C address
+        break;
+      case 'servo':
+        // Traducing instance to I2C address
+        controller = getController(ServoController, toi.parent.instance - 1, servoControllers);
+        toiItem = controller.createServo(
+          toi.parent.port,
+          {
+            mqttClient,
+            instance: toi.instance,
+          },
+        );
+        mqttTopics.push({
+          topic: toiItem.myTopic,
+          topicToi: toiItem,
+        });
+        servo.push(toiItem);
+        break;
+      case 'motor':
+        // Traducing instance to I2C address
+        controller = getController(MotorController, toi.parent.instance - 1, motorControllers);
+        toiItem = controller.createMotor(
+          toi.parent.port,
+          {
+            mqttClient,
+            instance: toi.instance,
+          },
+        );
+        mqttTopics.push({
+          topic: toiItem.myTopic,
+          topicToi: toiItem,
+        });
+        motor.push(toiItem);
+        break;
+      default:
+    }
+  });
+
+  eval(data.code || '');
+};
+
+runner();
 
 /* eslint-disable no-eval */
 // eval('console.log("Hello from child")')
 // setInterval(() => {}, 10000);
 
 const releaser = (toiVect) => {
-  toiVect.forEach(toi => toi.release());
+  toiVect.forEach((toi) => {
+    if (toi.instance !== undefined) {
+      toi.controller.release();
+      return;
+    }
+    toi.release();
+  });
 };
 
 /**
@@ -154,4 +309,6 @@ function exitHandler() {
 
 process.on('SIGTERM', exitHandler);
 process.on('SIGINT', exitHandler);
-// process.on('exit', exitHandler);
+// process.on('exit', () => {
+//   console.log('I\'m out');
+// });
