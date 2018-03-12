@@ -61,7 +61,11 @@ server.on('clientConnected', (client) => {
   console.log('client connected', client.id);
 });
 
+// server.on('unsubscribed', (params) => {
+//   console.log('client unsubscribed:', params);
+// })
+
 // fired when a message is received
-server.on('published', (packet, client) => {
-  console.log('Published', packet.topic, packet.payload.toString());
-});
+// server.on('published', (packet, client) => {
+//   console.log('Published', packet.topic, packet.payload.toString());
+// });

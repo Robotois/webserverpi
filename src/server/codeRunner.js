@@ -5,7 +5,7 @@ const Light = require('robotois-light-sensor');
 const Sound = require('robotois-sound-sensor');
 const Led = require('robotois-led');
 const Temperature = require('robotois-temperature-sensor');
-const LCD = require('../../../robotois-lcd-display');
+const LCD = require('robotois-lcd-display');
 const Rotary = require('robotois-rotary-sensor');
 const Button = require('robotois-button');
 const Line = require('robotois-line-sensor');
@@ -66,31 +66,31 @@ const requestTopic = (topic, client) => {
   }
 };
 
-const mqttHost = process.env.mqttHost;
-const mqttClient = mqtt.connect({ host: mqttHost, port: 1883 });
+const requestProcessor = (client) => {
+  client.on('message', (topic, message) => {
+    switch (topic) {
+      case 'requestTopic':
+      requestTopic(message.toString(), client);
+      break;
+      default:
+    }
+  });
+};
 
-const subscriber = () => new Promise((resolve) => {
-  mqttClient.on('connect', () => {
-    mqttClient.subscribe('requestTopic');
+const subscriber = (client) => new Promise((resolve) => {
+  client.on('connect', () => {
+    client.subscribe('requestTopic');
+    requestProcessor(client);
     resolve(true);
   });
 });
 
-mqttClient.on('message', (topic, message) => {
-  switch (topic) {
-    case 'requestTopic':
-      requestTopic(message.toString(), mqttClient);
-      break;
-    default:
-  }
-});
-
-const createToiWithEvents = (ToiType, toiConfig) => {
+const createToiWithEvents = (ToiType, toiConfig, client) => {
   const newToi = toiConfig.parentInstance ?
     new ToiType(toiConfig.parentPort, toiConfig.parentInstance) :
     new ToiType(toiConfig.parentPort);
   newToi.enableEvents({
-    mqttClient,
+    mqttClient: client,
     instance: toiConfig.toiInstance,
   });
   mqttTopics.push({
@@ -101,11 +101,15 @@ const createToiWithEvents = (ToiType, toiConfig) => {
   return newToi;
 };
 
+const mqttHost = process.env.mqttHost;
+const mqttClient = mqtt.connect({ host: mqttHost, port: 1883 });
+
 const data = JSON.parse(process.env.data);
 const { connections } = data.connections;
 
 const runner = async () => {
-  await subscriber();
+  await subscriber(mqttClient);
+  // requestProcessor(mqttClient);
   connections.sort((a, b) => a.instance - b.instance);
   connections.forEach((toi) => {
     let toiItem;
@@ -119,6 +123,7 @@ const runner = async () => {
             parentInstance: toi.parent.instance - 1,
             toiInstance: toi.instance,
           },
+          mqttClient,
         ));
         break;
       case 'rotary':
@@ -129,6 +134,7 @@ const runner = async () => {
             parentInstance: toi.parent.instance - 1,
             toiInstance: toi.instance,
           },
+          mqttClient,
         ));
         break;
       case 'light':
@@ -138,6 +144,7 @@ const runner = async () => {
             parentInstance: toi.parent.instance - 1,
             toiInstance: toi.instance,
           },
+          mqttClient,
         ));
         break;
       case 'temperature':
@@ -148,6 +155,7 @@ const runner = async () => {
             parentInstance: toi.parent.instance - 1,
             toiInstance: toi.instance,
           },
+          mqttClient,
         ));
         break;
       case 'distance':
@@ -157,6 +165,7 @@ const runner = async () => {
             parentPort: toi.parent.port,
             toiInstance: toi.instance,
           },
+          mqttClient,
         ));
         break;
       case 'button':
@@ -166,6 +175,7 @@ const runner = async () => {
             parentPort: toi.parent.port,
             toiInstance: toi.instance,
           },
+          mqttClient,
         ));
         break;
       case 'motion':
@@ -175,6 +185,7 @@ const runner = async () => {
             parentPort: toi.parent.port,
             toiInstance: toi.instance,
           },
+          mqttClient,
         ));
         break;
       case 'led':

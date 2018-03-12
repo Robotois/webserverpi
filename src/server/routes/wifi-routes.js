@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const os = require('os');
-const { connectWifi, startAP } = require('wifi-config');
+const { connectWifi, startAP } = require('robotois-wifi-config');
 const iwlist = require('wireless-tools/iwlist');
 const command = require('../../robotois-reset/commands');
 
