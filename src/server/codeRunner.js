@@ -102,7 +102,7 @@ const createToiWithEvents = (ToiType, toiConfig, client) => {
 };
 
 const mqttHost = process.env.mqttHost;
-const mqttClient = mqtt.connect({ host: mqttHost, port: 1883 });
+const mqttClient = mqtt.connect({ host: mqttHost, port: 9001 });
 
 const data = JSON.parse(process.env.data);
 const { connections } = data.connections;

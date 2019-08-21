@@ -1,8 +1,8 @@
-const Express = require('express');
-const bodyParser = require('body-parser');
+const express = require('express');
+// const bodyParser = require('body-parser');
 const cp = require('child_process');
 
-const router = Express.Router();
+const router = express.Router();
 
 router.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -10,8 +10,8 @@ router.use((req, res, next) => {
   next();
 });
 
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
 
 let runner = null;
 let runnerError;
@@ -44,7 +44,7 @@ const runCode = (req, res) => {
   };
   // console.log(env.data);
 
-  runner = cp.fork(`${__dirname}/../codeRunner.js`, [], { env, silent: true });
+  runner = cp.fork(`${__dirname}/../runner/index.js`, [], { env, silent: true });
   runnerError = undefined;
   runner.stdout.on('data', (stdout) => {
     console.log(stdout.toString());
