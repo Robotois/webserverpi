@@ -14,9 +14,9 @@
   "author": "iam@armando.mx",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.1",
-    "express": "^4.15.4",
-    "morgan": "^1.8.2",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
     "mosca": "^2.6.0",
     "mqtt": "^2.13.1",
     "onoff": "^1.1.7",
